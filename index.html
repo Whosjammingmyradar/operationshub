@@ -29,13 +29,8 @@
   </header>
 
   <nav class="tab-bar">
-    <span class="tab-group-label">WEATHER</span>
-    <button class="tab-btn active" data-tab="weather">WX</button>
-    <button class="tab-btn" data-tab="metar">METAR/TAF</button>
-    <button class="tab-btn" data-tab="pireps">PIREPs</button>
-    <button class="tab-btn" data-tab="wxadvanced">WX+</button>
     <span class="tab-group-label">AIRSPACE</span>
-    <button class="tab-btn" data-tab="notams">NOTAMs</button>
+    <button class="tab-btn active" data-tab="notams">NOTAMs</button>
     <button class="tab-btn" data-tab="tfr">TFRs</button>
     <button class="tab-btn" data-tab="charts">CHARTS</button>
     <button class="tab-btn" data-tab="traffic">TRAFFIC</button>
@@ -48,154 +43,14 @@
     <button class="tab-btn" data-tab="airworthiness">AIRWORTHINESS</button>
     <span class="tab-group-label">OPS</span>
     <button class="tab-btn" data-tab="checklist">CHECKLISTS</button>
-    <button class="tab-btn" data-tab="weight">W&amp;B/FUEL</button>
+    <button class="tab-btn" data-tab="weight">W&amp;B</button>
     <button class="tab-btn" data-tab="tools">TOOLS</button>
   </nav>
 
   <main class="app-body">
 
-    <!-- WEATHER -->
-    <section class="tab-content active" id="tab-weather">
-      <div class="section-header">
-        <h2>Weather Overview</h2>
-        <div class="search-bar">
-          <input type="text" id="wxAirport" placeholder="ICAO (e.g. KDFW)" maxlength="4" />
-          <button class="btn-primary" onclick="loadWeatherOverview()">FETCH</button>
-        </div>
-      </div>
-      <div class="wx-grid" id="wxGrid">
-        <div class="wx-card placeholder-card"><div class="placeholder-text">Enter an airport identifier above to load weather data.</div></div>
-      </div>
-      <div class="section-divider"></div>
-      <h3 class="sub-heading">Aviation Weather Depictions</h3>
-      <div class="wx-links-grid">
-        <a class="wx-link-card" href="https://www.aviationweather.gov/gfa" target="_blank"><span class="wl-icon">🌐</span><span class="wl-label">GFA Tool<br><small>Graphical Forecast</small></span></a>
-        <a class="wx-link-card" href="https://www.aviationweather.gov/sigmet" target="_blank"><span class="wl-icon">⚠️</span><span class="wl-label">SIGMETs<br><small>Significant Met</small></span></a>
-        <a class="wx-link-card" href="https://www.aviationweather.gov/airmet" target="_blank"><span class="wl-icon">🔶</span><span class="wl-label">AIRMETs<br><small>Airmen's Met Info</small></span></a>
-        <a class="wx-link-card" href="https://www.aviationweather.gov/windtemp" target="_blank"><span class="wl-icon">💨</span><span class="wl-label">Winds Aloft<br><small>FB Forecasts</small></span></a>
-        <a class="wx-link-card" href="https://www.aviationweather.gov/fcstdisc" target="_blank"><span class="wl-icon">📋</span><span class="wl-label">Area Forecast<br><small>FA Discussion</small></span></a>
-        <a class="wx-link-card" href="https://www.aviationweather.gov/icing" target="_blank"><span class="wl-icon">🧊</span><span class="wl-label">Icing<br><small>CIP / FIP</small></span></a>
-        <a class="wx-link-card" href="https://www.aviationweather.gov/turbulence" target="_blank"><span class="wl-icon">〰️</span><span class="wl-label">Turbulence<br><small>GTG Products</small></span></a>
-        <a class="wx-link-card" href="https://www.aviationweather.gov/convective" target="_blank"><span class="wl-icon">⛈️</span><span class="wl-label">Convective<br><small>Outlook / SWO</small></span></a>
-      </div>
-    </section>
-
-    <!-- METAR/TAF -->
-    <section class="tab-content" id="tab-metar">
-      <div class="section-header">
-        <h2>METAR / TAF</h2>
-        <div class="search-bar">
-          <input type="text" id="metarInput" placeholder="ICAO (e.g. KORD)" maxlength="4" />
-          <button class="btn-primary" onclick="loadMetarTaf()">FETCH</button>
-        </div>
-      </div>
-      <div id="metarOutput" class="data-output"><p class="hint-text">Enter an ICAO airport identifier and press FETCH.</p></div>
-    </section>
-
-    <!-- PIREPs -->
-    <section class="tab-content" id="tab-pireps">
-      <div class="section-header">
-        <h2>PIREPs — Pilot Reports</h2>
-        <div class="search-bar">
-          <input type="text" id="pirepInput" placeholder="ICAO (e.g. KORD)" maxlength="4"/>
-          <button class="btn-primary" onclick="loadPireps()">FETCH</button>
-        </div>
-      </div>
-      <div class="pirep-legend">
-        <span class="pirep-badge turb-none">NO TURB</span>
-        <span class="pirep-badge turb-light">LIGHT</span>
-        <span class="pirep-badge turb-mod">MOD</span>
-        <span class="pirep-badge turb-sev">SEV</span>
-        <span class="pirep-badge ice-light">ICE-LIGHT</span>
-        <span class="pirep-badge ice-mod">ICE-MOD</span>
-      </div>
-      <div id="pirepOutput" class="data-output"><p class="hint-text">Fetch PIREPs for a location to view pilot weather reports.</p></div>
-    </section>
-
-    <!-- WX+ ADVANCED -->
-    <section class="tab-content" id="tab-wxadvanced">
-      <div class="section-header"><h2>Advanced Weather</h2></div>
-
-      <h3 class="sub-heading">ASOS / AWOS Station Finder</h3>
-      <div class="search-bar" style="margin-bottom:12px">
-        <input type="text" id="asosInput" placeholder="State abbreviation (e.g. TX) or ICAO" style="width:240px"/>
-        <button class="btn-primary" onclick="loadASOSStations()">SEARCH</button>
-      </div>
-      <div id="asosOutput" class="data-output" style="min-height:80px"><p class="hint-text">Search for ASOS/AWOS stations by state abbreviation or airport identifier.</p></div>
-      <div class="resource-links" style="margin-top:10px;margin-bottom:4px">
-        <a href="https://www.faa.gov/air_traffic/weather/asos/" target="_blank" class="resource-link">FAA ASOS Program ↗</a>
-        <a href="https://www.nws.noaa.gov/asos/" target="_blank" class="resource-link">NWS ASOS ↗</a>
-        <a href="https://mesonet.agron.iastate.edu/request/download.phtml" target="_blank" class="resource-link">Iowa State ASOS Archive ↗</a>
-      </div>
-
-      <div class="section-divider"></div>
-
-      <h3 class="sub-heading">Upper Air Soundings (Rawinsondes)</h3>
-      <p style="font-size:13px;color:var(--text-secondary);font-family:var(--font-body);margin-bottom:12px">Essential for icing layer analysis, turbulence altitude, and wind shear assessment. Data from University of Wyoming archive.</p>
-      <div class="search-bar" style="margin-bottom:12px">
-        <input type="text" id="soundingStation" placeholder="Station ID (e.g. OUN, FFC, ABQ)" style="width:180px"/>
-        <select id="soundingType" style="background:var(--bg-card);border:1px solid var(--border-bright);color:var(--text-primary);padding:8px 10px;border-radius:4px;font-family:var(--font-data);font-size:13px">
-          <option value="TEXT%3ALIST">Sounding Text</option>
-          <option value="GIF%3ASKEWT">Skew-T Plot (GIF)</option>
-          <option value="GIF%3AHODOGRAPH">Hodograph</option>
-        </select>
-        <button class="btn-primary" onclick="openSounding()">OPEN</button>
-      </div>
-      <div class="sounding-grid" id="soundingStationsGrid"></div>
-
-      <div class="section-divider"></div>
-
-      <h3 class="sub-heading">Prog Charts — Surface Analysis &amp; Forecasts</h3>
-      <div class="prog-chart-grid">
-        <a class="prog-chart-card" href="https://www.wpc.ncep.noaa.gov/basicwx/basicwx_wbg.php" target="_blank"><div class="pc-title">Surface Analysis</div><div class="pc-sub">Current NWS WPC surface analysis</div></a>
-        <a class="prog-chart-card" href="https://www.wpc.ncep.noaa.gov/basicwx/day0-7loop.gif" target="_blank"><div class="pc-title">12-hr Prog</div><div class="pc-sub">12-hour forecast prog chart</div></a>
-        <a class="prog-chart-card" href="https://www.wpc.ncep.noaa.gov/basicwx/day1-5loop.gif" target="_blank"><div class="pc-title">24/48-hr Prog</div><div class="pc-sub">Extended forecast charts</div></a>
-        <a class="prog-chart-card" href="https://www.aviationweather.gov/gfa#prog" target="_blank"><div class="pc-title">Aviation Prog (GFA)</div><div class="pc-sub">AWC Graphical Forecast for Aviation</div></a>
-        <a class="prog-chart-card" href="https://www.spc.noaa.gov/products/outlook/" target="_blank"><div class="pc-title">SPC Convective Outlook</div><div class="pc-sub">Storm Prediction Center severe wx</div></a>
-        <a class="prog-chart-card" href="https://www.nhc.noaa.gov" target="_blank"><div class="pc-title">NHC Tropical</div><div class="pc-sub">Hurricane &amp; tropical advisories</div></a>
-      </div>
-
-      <div class="section-divider"></div>
-
-      <h3 class="sub-heading">Satellite, Radar &amp; Specialized Products</h3>
-      <div class="sat-radar-grid">
-        <div class="sat-card">
-          <div class="sat-card-title">🛰 GOES Satellite</div>
-          <div class="sat-card-sub">GOES-East/West visible, IR, and water vapor imagery</div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
-            <a href="https://www.star.nesdis.noaa.gov/goes/conus.php" target="_blank" class="btn-primary" style="text-decoration:none">GOES Viewer ↗</a>
-            <a href="https://www.aviationweather.gov/satellite" target="_blank" class="btn-secondary" style="text-decoration:none">AWC Satellite ↗</a>
-          </div>
-        </div>
-        <div class="sat-card">
-          <div class="sat-card-title">📡 NWS Radar Mosaic</div>
-          <div class="sat-card-sub">National composite radar (RIDGE2) and local NEXRAD</div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
-            <a href="https://www.radar.weather.gov/region/conus/standard" target="_blank" class="btn-primary" style="text-decoration:none">NWS Radar ↗</a>
-            <a href="https://www.aviationweather.gov/radar" target="_blank" class="btn-secondary" style="text-decoration:none">AWC Radar ↗</a>
-          </div>
-        </div>
-        <div class="sat-card">
-          <div class="sat-card-title">🌋 Volcanic Ash / Int'l SIGMET</div>
-          <div class="sat-card-sub">Washington VAAC advisories — critical for international &amp; Pacific operations</div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
-            <a href="https://www.ssd.noaa.gov/VAAC/WESTERN/archive.html" target="_blank" class="btn-primary" style="text-decoration:none">Washington VAAC ↗</a>
-            <a href="https://www.aviationweather.gov/sigmet/intl" target="_blank" class="btn-secondary" style="text-decoration:none">Int'l SIGMETs ↗</a>
-          </div>
-        </div>
-        <div class="sat-card">
-          <div class="sat-card-title">🌡 BLIPMAP — Boundary Layer</div>
-          <div class="sat-card-sub">Thermal &amp; boundary layer forecasts — key for low-level helicopter ops and soaring condition analysis</div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
-            <a href="https://www.drjack.net/BLIP/USNAM/FCST/" target="_blank" class="btn-primary" style="text-decoration:none">Dr. Jack BLIPMAP ↗</a>
-            <a href="https://forecast.weather.gov" target="_blank" class="btn-secondary" style="text-decoration:none">NWS Point Forecast ↗</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- NOTAMs -->
-    <section class="tab-content" id="tab-notams">
+    <section class="tab-content active" id="tab-notams">
       <div class="section-header">
         <h2>NOTAMs</h2>
         <div class="search-bar">
@@ -509,34 +364,59 @@
       <div id="checklistContent" class="checklist-display"></div>
     </section>
 
-    <!-- W&B / FUEL -->
+    <!-- W&B -->
     <section class="tab-content" id="tab-weight">
-      <div class="section-header"><h2>Weight &amp; Balance / Fuel Planning</h2></div>
-      <div class="wb-section">
-        <h3 class="sub-heading">Weight &amp; Balance Calculator</h3>
-        <div class="wb-form">
-          <div class="wb-row header-row"><span>ITEM</span><span>WEIGHT (lbs)</span><span>ARM (in)</span><span>MOMENT</span></div>
-          <div id="wbItems"></div>
-          <button class="btn-secondary" style="margin-top:10px" onclick="addWBItem()">+ Add Item</button>
-          <div class="wb-totals" id="wbTotals"></div>
+      <div class="section-header"><h2>Weight &amp; Balance Calculator</h2></div>
+
+      <div class="wb-disclaimer">
+        ⚠️ <strong>Reference only.</strong> Always use your aircraft's current AFM/POH for official W&amp;B computations. Empty weight and arm must be taken from your aircraft's actual weight &amp; balance record.
+      </div>
+
+      <!-- Aircraft selector -->
+      <div class="wb-selector-row">
+        <label class="wb-selector-label">SELECT AIRCRAFT VARIANT</label>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <select id="wb_aircraft_select" class="wb-ac-select" onchange="loadWBAircraft()">
+            <option value="">— Select Aircraft Variant —</option>
+          </select>
+          <button class="btn-secondary" onclick="resetWBWeights()">RESET WEIGHTS</button>
         </div>
       </div>
-      <div class="section-divider"></div>
-      <div class="fuel-section">
-        <h3 class="sub-heading">Fuel Planning</h3>
-        <div class="fuel-form">
-          <div class="fuel-row"><label>Fuel Type</label>
-            <select id="fuelType" onchange="calcFuel()">
-              <option value="100ll">100LL AvGas (6.0 lbs/gal)</option>
-              <option value="jet-a">Jet-A (6.7 lbs/gal)</option>
-              <option value="mogas">Mogas (6.0 lbs/gal)</option>
-            </select>
+
+      <!-- Table + graph -->
+      <div class="wb-layout">
+        <!-- Left: table -->
+        <div class="wb-left">
+          <div id="wb_table_container">
+            <div style="color:var(--text-secondary);font-family:var(--font-body);font-size:13px;padding:20px">
+              Select an aircraft variant above to begin.
+            </div>
           </div>
-          <div class="fuel-row"><label>Fuel on Board (gal)</label><input type="number" id="fuelGal" value="50" oninput="calcFuel()"/></div>
-          <div class="fuel-row"><label>Fuel Burn Rate (gal/hr)</label><input type="number" id="fuelBurn" value="10" oninput="calcFuel()"/></div>
-          <div class="fuel-row"><label>Reserve (min)</label><input type="number" id="fuelReserve" value="45" oninput="calcFuel()"/></div>
-          <div class="fuel-results" id="fuelResults"></div>
         </div>
+        <!-- Right: graph -->
+        <div class="wb-right">
+          <div class="wb-graph-header">CG ENVELOPE</div>
+          <canvas id="wb_cg_canvas" width="420" height="380"></canvas>
+          <div id="wb_cg_result"></div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- Fuel planning kept -->
+      <h3 class="sub-heading">Fuel Planning</h3>
+      <div class="fuel-form">
+        <div class="fuel-row"><label>Fuel Type</label>
+          <select id="fuelType" onchange="calcFuel()">
+            <option value="100ll">100LL AvGas (6.0 lbs/gal)</option>
+            <option value="jet-a">Jet-A (6.7 lbs/gal)</option>
+            <option value="mogas">Mogas (6.0 lbs/gal)</option>
+          </select>
+        </div>
+        <div class="fuel-row"><label>Fuel on Board (gal)</label><input type="number" id="fuelGal" value="50" oninput="calcFuel()"/></div>
+        <div class="fuel-row"><label>Fuel Burn Rate (gal/hr)</label><input type="number" id="fuelBurn" value="10" oninput="calcFuel()"/></div>
+        <div class="fuel-row"><label>Reserve (min)</label><input type="number" id="fuelReserve" value="45" oninput="calcFuel()"/></div>
+        <div class="fuel-results" id="fuelResults"></div>
       </div>
     </section>
 
@@ -624,10 +504,11 @@
     <span>Data: aviationweather.gov | FAA | NTSB | OurAirports | ADS-B Exchange | OpenSky Network</span>
   </footer>
 
-<script src="data.js"></script>
-<script src="weather.js"></script>
-<script src="tools.js"></script>
-<script src="extended.js"></script>
-<script src="app.js"></script>
+  <script src="data.js"></script>
+  <script src="wb_data.js"></script>
+  <script src="wb_calc.js"></script>
+  <script src="tools.js"></script>
+  <script src="extended.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

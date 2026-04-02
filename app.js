@@ -261,7 +261,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderFARCategories();
   renderPOH();
   renderChecklists();
-  renderWBItems();
   calcFuel();
   calcDA();
   calcPA();
@@ -274,6 +273,9 @@ document.addEventListener('DOMContentLoaded', () => {
   renderChartDownloads();
   renderAFDGrid();
   renderAWCards();
+
+  // v3 W&B
+  initWBCalculator();
 });
 
 // Allow Enter key on inputs
@@ -285,3 +287,13 @@ document.addEventListener('keypress', (e) => {
     if (btn) btn.click();
   }
 });
+
+// ===== W&B RESET =====
+function resetWBWeights() {
+  if (!wb_currentAircraft) return;
+  wb_currentAircraft.stations.forEach((s, i) => {
+    wb_weights[i] = s.defaultWeight || 0;
+  });
+  renderWBRows();
+  updateWBCalc();
+}

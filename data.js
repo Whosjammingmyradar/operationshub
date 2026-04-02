@@ -208,7 +208,7 @@ Aircraft being overtaken has right-of-way. An aircraft on approach to land or on
 <p>Standard takeoff minimums (unless otherwise published):<br>
 <strong>1 or 2 engines:</strong> 1 SM<br>
 <strong>3+ engines:</strong> ½ SM</p>
-<p>Alternate takeoff minimums or departure procedures (DPs/ODPs) are published in the front of the Terminal Procedures Publication (TPP) where required. Look for a <strong>▲T</strong> symbol on instrument approach charts.</p>`
+<p>Alternate takeoff minimums or departure procedures (DPs/ODPs) are published in the front of the Terminal Procedures Publication (TPP) where required. Look for a <strong>T</strong> symbol on instrument approach charts.</p>`
       },
       {
         title: "Approach Minimums — DA vs MDA",

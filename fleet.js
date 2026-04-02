@@ -57,14 +57,14 @@ function renderFleetSidebar() {
     const gnd  = live ? live[8] : null;
     const alt  = live && live[7]  ? Math.round(parseFloat(live[7]) *3.28084).toLocaleString()+' ft' : '—';
     const spd  = live && live[9]  ? Math.round(parseFloat(live[9]) *1.94384)+' kts' : '—';
-    const dot  = live ? (gnd?'🟡':'🟢') : '⚪';
+    const dot = live ? (gnd ? '<span class="dot-gnd">GND</span>' : '<span class="dot-air">AIR</span>') : '<span class="dot-unk">---</span>';
     const aCnt = alertRules.filter(a=>a.hex===ac.hex&&a.enabled).length;
     return `
       <div class="fleet-item ${isActive?'fleet-item-active':''}" onclick="selectFleetAircraft('${ac.hex}')">
         <div class="fleet-item-top">
           <span class="fleet-status-dot">${dot}</span>
           <span class="fleet-item-name">${ac.name}</span>
-          ${aCnt?`<span class="fleet-alert-badge">🔔${aCnt}</span>`:''}
+          ${aCnt?`<span class="fleet-alert-badge">${aCnt}</span>`:''}
           <button class="fleet-remove-btn" onclick="removeFleetAircraft('${ac.id}',event)">×</button>
         </div>
         <div class="fleet-item-reg">${ac.reg||'—'} <span class="fleet-item-hex">${ac.hex||'no hex'}</span></div>
@@ -150,18 +150,18 @@ async function pollFleetAircraft(hex) {
 function checkAlerts(hex, s, prevGnd, curGnd) {
   alertRules.filter(a=>a.hex===hex&&a.enabled).forEach(rule => {
     let triggered=false, msg='';
-    if (rule.type==='depart' && prevGnd===true  && curGnd===false) { triggered=true; msg=`✈ ${getAcName(hex)} has DEPARTED`; }
-    if (rule.type==='land'   && prevGnd===false && curGnd===true)  { triggered=true; msg=`🛬 ${getAcName(hex)} has LANDED`;   }
+    if (rule.type==='depart' && prevGnd===true  && curGnd===false) { triggered=true; msg=`[DEPART] ${getAcName(hex)} has DEPARTED`; }
+    if (rule.type==='land'   && prevGnd===false && curGnd===true)  { triggered=true; msg=`[LAND]   ${getAcName(hex)} has LANDED`;   }
     if (rule.type==='altitude') {
       const ft = s[7] ? parseFloat(s[7])*3.28084 : null;
       if (ft!==null) {
-        if (rule.params.dir==='above' && ft>rule.params.alt) { triggered=true; msg=`⬆ ${getAcName(hex)} above ${rule.params.alt.toLocaleString()} ft (${Math.round(ft).toLocaleString()} ft)`; }
-        if (rule.params.dir==='below' && ft<rule.params.alt && !s[8]) { triggered=true; msg=`⬇ ${getAcName(hex)} below ${rule.params.alt.toLocaleString()} ft`; }
+        if (rule.params.dir==='above' && ft>rule.params.alt) { triggered=true; msg=`[ALT-HI] ${getAcName(hex)} above ${rule.params.alt.toLocaleString()} ft (${Math.round(ft).toLocaleString()} ft)`; }
+        if (rule.params.dir==='below' && ft<rule.params.alt && !s[8]) { triggered=true; msg=`[ALT-LO] ${getAcName(hex)} below ${rule.params.alt.toLocaleString()} ft`; }
       }
     }
     if (rule.type==='geofence' && s[6]!==null && s[5]!==null) {
       const d = haversineNM(parseFloat(s[6]),parseFloat(s[5]),rule.params.lat,rule.params.lon);
-      if (d<=rule.params.radiusNm) { triggered=true; msg=`📍 ${getAcName(hex)} within ${rule.params.radiusNm} NM of ${rule.params.name||'waypoint'} (${d.toFixed(1)} NM)`; }
+      if (d<=rule.params.radiusNm) { triggered=true; msg=`[FENCE]  ${getAcName(hex)} within ${rule.params.radiusNm} NM of ${rule.params.name||'waypoint'} (${d.toFixed(1)} NM)`; }
     }
     if (triggered) fireAlert(rule, msg);
   });
@@ -169,7 +169,7 @@ function checkAlerts(hex, s, prevGnd, curGnd) {
 
 function fireAlert(rule, msg) {
   showFleetToast(msg, rule.type);
-  if ('Notification' in window && Notification.permission==='granted') new Notification('AviOps Alert', { body:msg });
+  if ('Notification' in window && Notification.permission==='granted') new Notification('AviOps Fleet Alert', { body:msg });
   const log = document.getElementById('alert_log');
   if (log) {
     const item = document.createElement('div');
@@ -238,8 +238,8 @@ function renderAlertRules() {
   container.innerHTML = alertRules.map(r=>{
     const ac=fleetList.find(a=>a.hex===r.hex);
     let desc='';
-    if(r.type==='depart')   desc='Departs (ground → airborne)';
-    if(r.type==='land')     desc='Lands (airborne → ground)';
+    if(r.type==='depart')   desc='Departs (ground  airborne)';
+    if(r.type==='land')     desc='Lands (airborne  ground)';
     if(r.type==='altitude') desc=`Goes ${r.params.dir} ${r.params.alt?.toLocaleString()} ft`;
     if(r.type==='geofence') desc=`Within ${r.params.radiusNm} NM of ${r.params.name}`;
     return `
@@ -389,9 +389,9 @@ function renderFleetPanel(hex) {
         <div style="font-size:13px;font-weight:700;color:${sc}">${st}</div>
         <div id="fleet_poll_status" style="font-size:10px;color:var(--text-secondary);font-family:var(--font-data)">${pa}</div>
         <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;justify-content:flex-end">
-          <button class="btn-secondary" style="font-size:11px;padding:4px 10px" onclick="pollFleetAircraft('${hex}')">↻ REFRESH</button>
-          <button class="btn-secondary" style="font-size:11px;padding:4px 10px" onclick="exportFleetCSV('${hex}')">⬇ CSV</button>
-          <button class="btn-secondary" style="font-size:11px;padding:4px 10px" onclick="clearRouteTrack('${hex}')">🗺 CLEAR ROUTE</button>
+          <button class="btn-secondary" style="font-size:11px;padding:4px 10px" onclick="pollFleetAircraft('${hex}')"> REFRESH</button>
+          <button class="btn-secondary" style="font-size:11px;padding:4px 10px" onclick="exportFleetCSV('${hex}')"> CSV</button>
+          <button class="btn-secondary" style="font-size:11px;padding:4px 10px" onclick="clearRouteTrack('${hex}')"> CLEAR ROUTE</button>
         </div>
       </div>
     </div>
@@ -404,7 +404,7 @@ function renderFleetPanel(hex) {
     </div>`:`
     <div style="color:var(--text-secondary);font-family:var(--font-body);font-size:13px;padding:12px 0">
       No live state data. Aircraft may be on ground/transponder off, or hex may be incorrect.<br><br>
-      <a href="https://globe.adsbexchange.com/?icao=${hex}" target="_blank" style="color:var(--accent)">Search ADS-B Exchange ↗</a>
+      <a href="https://globe.adsbexchange.com/?icao=${hex}" target="_blank" style="color:var(--accent)">Search ADS-B Exchange </a>
     </div>`}
     <div class="route-section">
       <div class="route-header">ROUTE TRACK <span style="font-size:10px;font-weight:400;color:var(--text-secondary);margin-left:6px">colored by altitude · updates every 30s poll</span></div>
@@ -416,7 +416,7 @@ function renderFleetPanel(hex) {
         <span style="font-size:10px;font-weight:400;color:var(--text-secondary);margin-left:8px">${fd?.history?.length||0} entries</span>
         ${fd?.history?.length?`
           <button onclick="clearFleetHistory('${hex}')" style="margin-left:auto;background:none;border:1px solid rgba(255,56,56,0.3);color:rgba(255,56,56,0.6);font-size:10px;padding:2px 8px;border-radius:2px;cursor:pointer">CLEAR</button>
-          <button onclick="exportFleetCSV('${hex}')" style="margin-left:6px;background:none;border:1px solid var(--border-bright);color:var(--accent);font-size:10px;padding:2px 8px;border-radius:2px;cursor:pointer">⬇ EXPORT CSV</button>`:''}
+          <button onclick="exportFleetCSV('${hex}')" style="margin-left:6px;background:none;border:1px solid var(--border-bright);color:var(--accent);font-size:10px;padding:2px 8px;border-radius:2px;cursor:pointer"> EXPORT CSV</button>`:''}
       </div>
       <div class="fleet-history-table-wrap">
         ${fd?.history?.length?`

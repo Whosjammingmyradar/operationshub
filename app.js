@@ -206,7 +206,7 @@ function renderChecklistContent(name) {
   });
 
   container.innerHTML = `
-    <div class="checklist-title">✈ ${name}</div>
+    <div class="checklist-title"> ${name}</div>
     ${cl.sections.map(sec => `
       <div class="checklist-section">
         <div class="checklist-section-title">${sec.title}</div>

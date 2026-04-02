@@ -31,25 +31,25 @@ function calcSunriseSunset() {
   out.innerHTML = `
     <div class="sun-grid">
       <div class="sun-card sun-rise">
-        <div class="sun-card-icon">🌅</div>
+        <div class="sun-card-icon"></div>
         <div class="sun-card-label">SUNRISE</div>
         <div class="sun-card-time">${fmtUTC(results.sunrise)}</div>
         <div class="sun-card-local">Local: ${fmtLocal(results.sunrise)}</div>
       </div>
       <div class="sun-card sun-set">
-        <div class="sun-card-icon">🌇</div>
+        <div class="sun-card-icon"></div>
         <div class="sun-card-label">SUNSET</div>
         <div class="sun-card-time">${fmtUTC(results.sunset)}</div>
         <div class="sun-card-local">Local: ${fmtLocal(results.sunset)}</div>
       </div>
       <div class="sun-card">
-        <div class="sun-card-icon">🌓</div>
+        <div class="sun-card-icon"></div>
         <div class="sun-card-label">CIVIL TWILIGHT</div>
         <div class="sun-card-time" style="font-size:13px">Morning: ${fmtUTC(results.dawnCivil)}</div>
         <div class="sun-card-time" style="font-size:13px">Evening: ${fmtUTC(results.duskCivil)}</div>
       </div>
       <div class="sun-card">
-        <div class="sun-card-icon">☀️</div>
+        <div class="sun-card-icon"></div>
         <div class="sun-card-label">SOLAR NOON</div>
         <div class="sun-card-time">${fmtUTC(results.solarNoon)}</div>
         <div class="sun-card-local">Day length: ${results.dayLength}</div>
@@ -68,7 +68,7 @@ function calcSunriseSunset() {
         </div>
         <div class="sun-currency-row">
           <span class="sun-cur-label">Passenger carry night window (§61.57)</span>
-          <span class="sun-cur-val">1 hr after sunset → 1 hr before sunrise</span>
+          <span class="sun-cur-val">1 hr after sunset  1 hr before sunrise</span>
         </div>
       </div>
       <div style="font-size:11px;color:var(--text-secondary);font-family:var(--font-body);margin-top:8px">
@@ -244,8 +244,8 @@ REMARKS: ${remarks||'NONE'}`;
       <button class="btn-secondary" onclick="copyFPText('fp_format_faa')" style="margin-top:8px">COPY</button>
     </div>
     <div style="margin-top:14px;font-size:12px;color:var(--text-secondary);font-family:var(--font-body)">
-      ⚠️ Always verify your flight plan against current ICAO Doc 4444 and file via an authorized ATC unit or 1800wxbrief.com.
-      <a href="https://www.1800wxbrief.com/Website/flightPlan" target="_blank" style="color:var(--accent);margin-left:6px">File on 1800wxbrief ↗</a>
+      ! Always verify your flight plan against current ICAO Doc 4444 and file via an authorized ATC unit or 1800wxbrief.com.
+      <a href="https://www.1800wxbrief.com/Website/flightPlan" target="_blank" style="color:var(--accent);margin-left:6px">File on 1800wxbrief </a>
     </div>
   `;
 }
@@ -268,7 +268,7 @@ function copyFPText(containerId) {
   if (!pre) return;
   navigator.clipboard.writeText(pre.textContent).then(()=>{
     const btns = document.querySelectorAll('#'+containerId+' .btn-secondary');
-    btns.forEach(b => { b.textContent='COPIED ✓'; setTimeout(()=>b.textContent='COPY',2000); });
+    btns.forEach(b => { b.textContent='COPIED '; setTimeout(()=>b.textContent='COPY',2000); });
   });
 }
 
@@ -308,8 +308,8 @@ function calcHoverPerf() {
   const hogeMargin = hogeCapacity - gw;
 
   const statusChip = (ok, margin) => ok
-    ? `<span style="color:var(--success);font-weight:700">GO ✓ (${margin.toFixed(0)} lbs margin)</span>`
-    : `<span style="color:var(--danger);font-weight:700">NO-GO ✗ (${Math.abs(margin).toFixed(0)} lbs over)</span>`;
+    ? `<span style="color:var(--success);font-weight:700">GO  (${margin.toFixed(0)} lbs margin)</span>`
+    : `<span style="color:var(--danger);font-weight:700">NO-GO  (${Math.abs(margin).toFixed(0)} lbs over)</span>`;
 
   out.innerHTML = `
     <div class="hp-results">
@@ -340,8 +340,8 @@ function calcHoverPerf() {
         </div>
       </div>
 
-      ${da > 8000 ? `<div class="hp-warning">⚠️ High density altitude (${Math.round(da).toLocaleString()} ft). Performance significantly degraded. Verify against current POH charts.</div>` : ''}
-      ${gw > ac.maxGross ? `<div class="hp-warning" style="border-color:var(--danger)">🚫 Gross weight ${gw.toLocaleString()} lbs exceeds maximum gross weight ${ac.maxGross.toLocaleString()} lbs. Do not fly.</div>` : ''}
+      ${da > 8000 ? `<div class="hp-warning">! High density altitude (${Math.round(da).toLocaleString()} ft). Performance significantly degraded. Verify against current POH charts.</div>` : ''}
+      ${gw > ac.maxGross ? `<div class="hp-warning" style="border-color:var(--danger)"> Gross weight ${gw.toLocaleString()} lbs exceeds maximum gross weight ${ac.maxGross.toLocaleString()} lbs. Do not fly.</div>` : ''}
 
       <div style="font-size:11px;color:var(--text-secondary);font-family:var(--font-body);margin-top:14px;line-height:1.6">
         Performance data is approximate and based on standard AFM/POH charts at ISA conditions. Always use your aircraft's actual POH performance charts. HIGE/HOGE figures assume no wind, level surface, and normal operating procedures.

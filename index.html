@@ -14,7 +14,27 @@
   <header class="app-header">
     <div class="header-left">
       <div class="logo-block">
-        <span class="logo-icon">✈</span>
+        <svg class="logo-tower" viewBox="0 0 32 40" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <!-- Cab (glass box at top) -->
+          <rect x="7" y="3" width="18" height="11" rx="1" stroke="currentColor" stroke-width="1.6" fill="rgba(0,212,255,0.12)"/>
+          <!-- Cab top line -->
+          <line x1="7" y1="6.5" x2="25" y2="6.5" stroke="currentColor" stroke-width="1"/>
+          <!-- Cab vertical dividers -->
+          <line x1="13" y1="3" x2="13" y2="14" stroke="currentColor" stroke-width="0.8"/>
+          <line x1="19" y1="3" x2="19" y2="14" stroke="currentColor" stroke-width="0.8"/>
+          <!-- Antenna -->
+          <line x1="16" y1="0" x2="16" y2="3" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="16" cy="0" r="1" fill="currentColor"/>
+          <!-- Main shaft -->
+          <path d="M13 14 L11 28 L21 28 L19 14Z" stroke="currentColor" stroke-width="1.4" fill="rgba(0,212,255,0.06)"/>
+          <!-- Equipment room -->
+          <rect x="9" y="28" width="14" height="6" rx="1" stroke="currentColor" stroke-width="1.4" fill="rgba(0,212,255,0.08)"/>
+          <!-- Base -->
+          <rect x="6" y="34" width="20" height="4" rx="1" stroke="currentColor" stroke-width="1.4" fill="rgba(0,212,255,0.1)"/>
+          <!-- Signal arcs -->
+          <path d="M27 7 Q30 9.5 27 12" stroke="currentColor" stroke-width="1.2" fill="none" opacity="0.6"/>
+          <path d="M5 7 Q2 9.5 5 12" stroke="currentColor" stroke-width="1.2" fill="none" opacity="0.6"/>
+        </svg>
         <span class="logo-text">AVI<span class="logo-accent">OPS</span></span>
       </div>
       <div class="header-subtitle">Aviation Operations Center</div>
@@ -73,9 +93,9 @@
       <div class="notam-external">
         <h3 class="sub-heading">Official NOTAM Resources</h3>
         <div class="resource-links">
-          <a href="https://notams.aim.faa.gov/notamSearch/" target="_blank" class="resource-link">FAA NOTAM Search ↗</a>
-          <a href="https://pilotweb.nas.faa.gov/PilotWeb/" target="_blank" class="resource-link">PilotWeb ↗</a>
-          <a href="https://www.1800wxbrief.com" target="_blank" class="resource-link">1800wxbrief.com ↗</a>
+          <a href="https://notams.aim.faa.gov/notamSearch/" target="_blank" class="resource-link">FAA NOTAM Search </a>
+          <a href="https://pilotweb.nas.faa.gov/PilotWeb/" target="_blank" class="resource-link">PilotWeb </a>
+          <a href="https://www.1800wxbrief.com" target="_blank" class="resource-link">1800wxbrief.com </a>
         </div>
       </div>
     </section>
@@ -84,7 +104,7 @@
     <section class="tab-content" id="tab-tfr">
       <div class="section-header"><h2>Temporary Flight Restrictions</h2></div>
       <div class="tfr-info-card">
-        <div class="tfr-icon">🚫</div>
+        <div class="tfr-badge">TFR</div>
         <div class="tfr-desc"><strong>TFRs require real-time official sources.</strong> Always check directly with FAA TFR tools and 1800wxbrief before flight.</div>
       </div>
       <div class="tfr-links">
@@ -119,7 +139,7 @@
       <div class="iframe-container">
         <iframe id="svFrame" src="https://skyvector.com/?ll=39.8,-98.5&chart=301&zoom=4" allowfullscreen title="SkyVector"></iframe>
       </div>
-      <div style="margin-top:8px;font-size:11px;color:var(--text-secondary)">© SkyVector. For full functionality: <a href="https://skyvector.com" target="_blank" style="color:var(--accent)">skyvector.com ↗</a></div>
+      <div style="margin-top:8px;font-size:11px;color:var(--text-secondary)">© SkyVector. For full functionality: <a href="https://skyvector.com" target="_blank" style="color:var(--accent)">skyvector.com </a></div>
 
       <div class="section-divider"></div>
 
@@ -148,7 +168,7 @@
     <section class="tab-content active" id="tab-traffic">
       <div class="section-header"><h2>Live Traffic — ADS-B</h2></div>
       <div class="traffic-warning">
-        <span>⚠️</span>
+        <span>!</span>
         <span>For situational awareness only. Not all aircraft are ADS-B equipped. Do not use as sole collision avoidance tool.</span>
       </div>
 
@@ -161,7 +181,7 @@
       <div class="iframe-container" style="height:480px">
         <iframe id="adsbFrame" src="about:blank" allowfullscreen title="ADS-B Live Traffic" style="background:var(--bg-secondary)"></iframe>
       </div>
-      <div style="margin-top:8px;font-size:11px;color:var(--text-secondary)">Data © ADS-B Exchange contributors. <a href="https://globe.adsbexchange.com" target="_blank" style="color:var(--accent)">Open full viewer ↗</a></div>
+      <div style="margin-top:8px;font-size:11px;color:var(--text-secondary)">Data © ADS-B Exchange contributors. <a href="https://globe.adsbexchange.com" target="_blank" style="color:var(--accent)">Open full viewer </a></div>
 
       <div class="section-divider"></div>
 
@@ -175,11 +195,11 @@
       <div class="section-divider"></div>
       <h3 class="sub-heading">Tracking Resources</h3>
       <div class="resource-links">
-        <a href="https://globe.adsbexchange.com" target="_blank" class="resource-link">ADS-B Exchange ↗</a>
-        <a href="https://opensky-network.org" target="_blank" class="resource-link">OpenSky Network ↗</a>
-        <a href="https://www.flightaware.com" target="_blank" class="resource-link">FlightAware ↗</a>
-        <a href="https://www.flightradar24.com" target="_blank" class="resource-link">Flightradar24 ↗</a>
-        <a href="https://www.faa.gov/air_traffic/nas_status/" target="_blank" class="resource-link">FAA NAS Status ↗</a>
+        <a href="https://globe.adsbexchange.com" target="_blank" class="resource-link">ADS-B Exchange </a>
+        <a href="https://opensky-network.org" target="_blank" class="resource-link">OpenSky Network </a>
+        <a href="https://www.flightaware.com" target="_blank" class="resource-link">FlightAware </a>
+        <a href="https://www.flightradar24.com" target="_blank" class="resource-link">Flightradar24 </a>
+        <a href="https://www.faa.gov/air_traffic/nas_status/" target="_blank" class="resource-link">FAA NAS Status </a>
       </div>
     </section>
 
@@ -206,7 +226,7 @@
             <input type="text" id="fleet_add_hex" class="fleet-input" placeholder="e.g. a7486a"/>
             <label class="fleet-form-label" style="font-size:10px;color:var(--text-secondary)">Don't know the hex? Look up by reg:</label>
             <input type="text" id="fleet_hex_lookup" class="fleet-input" placeholder="N-number e.g. N569AS"/>
-            <button onclick="findHexByReg()" class="btn-secondary" style="margin-top:4px;font-size:11px;padding:4px 10px;width:100%">FIND ON ADS-B EXCHANGE ↗</button>
+            <button onclick="findHexByReg()" class="btn-secondary" style="margin-top:4px;font-size:11px;padding:4px 10px;width:100%">FIND ON ADS-B EXCHANGE </button>
             <label class="fleet-form-label">Notes</label>
             <input type="text" id="fleet_add_notes" class="fleet-input" placeholder="e.g. B738 — SoCal ops"/>
             <button class="btn-primary" onclick="addFleetAircraft()" style="width:100%;margin-top:10px">ADD TO FLEET</button>
@@ -214,13 +234,13 @@
 
           <!-- ALERTS PANEL -->
           <div class="fleet-add-panel" style="margin-top:14px">
-            <div class="fleet-add-title">🔔 ALERT RULES</div>
+            <div class="fleet-add-title">ALERT RULES</div>
             <label class="fleet-form-label">Aircraft</label>
             <select id="alert_ac_select" class="fleet-input"></select>
             <label class="fleet-form-label">Alert Type</label>
             <select id="alert_type" class="fleet-input" onchange="updateAlertTypeFields()">
-              <option value="depart">Departure (ground → airborne)</option>
-              <option value="land">Landing (airborne → ground)</option>
+              <option value="depart">Departure (ground  airborne)</option>
+              <option value="land">Landing (airborne  ground)</option>
               <option value="altitude">Altitude threshold</option>
               <option value="geofence">Geo-fence (proximity alert)</option>
             </select>
@@ -304,10 +324,10 @@
       <div class="section-divider"></div>
       <h3 class="sub-heading">Airport Resources</h3>
       <div class="resource-links">
-        <a href="https://ourairports.com" target="_blank" class="resource-link">OurAirports.com ↗</a>
-        <a href="https://www.airnav.com" target="_blank" class="resource-link">AirNav ↗</a>
-        <a href="https://www.aopa.org/destinations/airports" target="_blank" class="resource-link">AOPA Airport Directory ↗</a>
-        <a href="https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/dafd/" target="_blank" class="resource-link">FAA Chart Supplement ↗</a>
+        <a href="https://ourairports.com" target="_blank" class="resource-link">OurAirports.com </a>
+        <a href="https://www.airnav.com" target="_blank" class="resource-link">AirNav </a>
+        <a href="https://www.aopa.org/destinations/airports" target="_blank" class="resource-link">AOPA Airport Directory </a>
+        <a href="https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/dafd/" target="_blank" class="resource-link">FAA Chart Supplement </a>
       </div>
     </section>
 
@@ -320,11 +340,11 @@
         1800wxbrief.com is the official FAA-contracted NOTAM and briefing system. It supports domestic and ICAO international flight plans, weather briefings, and TFR checks.
       </div>
       <div class="resource-links" style="margin-bottom:20px">
-        <a href="https://www.1800wxbrief.com/Website/pilotBriefing" target="_blank" class="resource-link">Weather Briefing ↗</a>
-        <a href="https://www.1800wxbrief.com/Website/flightPlan" target="_blank" class="resource-link">File Flight Plan ↗</a>
-        <a href="https://www.1800wxbrief.com/Website/tfr" target="_blank" class="resource-link">TFR Check ↗</a>
-        <a href="https://www.1800wxbrief.com/Website/close" target="_blank" class="resource-link">Close Flight Plan ↗</a>
-        <a href="https://www.1800wxbrief.com/Website/notams" target="_blank" class="resource-link">NOTAMs ↗</a>
+        <a href="https://www.1800wxbrief.com/Website/pilotBriefing" target="_blank" class="resource-link">Weather Briefing </a>
+        <a href="https://www.1800wxbrief.com/Website/flightPlan" target="_blank" class="resource-link">File Flight Plan </a>
+        <a href="https://www.1800wxbrief.com/Website/tfr" target="_blank" class="resource-link">TFR Check </a>
+        <a href="https://www.1800wxbrief.com/Website/close" target="_blank" class="resource-link">Close Flight Plan </a>
+        <a href="https://www.1800wxbrief.com/Website/notams" target="_blank" class="resource-link">NOTAMs </a>
       </div>
 
       <div class="section-divider"></div>
@@ -332,9 +352,9 @@
       <h3 class="sub-heading">SUA / MOA Scheduling</h3>
       <p style="font-size:13px;color:var(--text-secondary);font-family:var(--font-body);margin-bottom:12px">Check Special Use Airspace hot/cold status before routing. Contact the controlling agency (ARTCC or military) for scheduling restricted areas and MOAs.</p>
       <div class="resource-links" style="margin-bottom:20px">
-        <a href="https://sua.faa.gov/sua/siteFrame.app" target="_blank" class="resource-link">FAA SUA Status ↗</a>
-        <a href="https://www.faa.gov/air_traffic/nas_status/" target="_blank" class="resource-link">NAS Status ↗</a>
-        <a href="https://www.faa.gov/air_traffic/tfm/tfms/" target="_blank" class="resource-link">Traffic Flow Mgmt ↗</a>
+        <a href="https://sua.faa.gov/sua/siteFrame.app" target="_blank" class="resource-link">FAA SUA Status </a>
+        <a href="https://www.faa.gov/air_traffic/nas_status/" target="_blank" class="resource-link">NAS Status </a>
+        <a href="https://www.faa.gov/air_traffic/tfm/tfms/" target="_blank" class="resource-link">Traffic Flow Mgmt </a>
       </div>
 
       <div class="section-divider"></div>
@@ -346,20 +366,20 @@
       </div>
       <div id="fuelPriceOutput" class="data-output" style="min-height:80px"><p class="hint-text">Opens AirNav fuel prices for the selected airport.</p></div>
       <div class="resource-links" style="margin-top:10px;margin-bottom:20px">
-        <a href="https://www.airnav.com/fuel/" target="_blank" class="resource-link">AirNav Fuel Prices ↗</a>
-        <a href="https://www.globalair.com/airport/fuel-prices.aspx" target="_blank" class="resource-link">GlobalAir Fuel ↗</a>
-        <a href="https://100ll.com" target="_blank" class="resource-link">100LL.com ↗</a>
+        <a href="https://www.airnav.com/fuel/" target="_blank" class="resource-link">AirNav Fuel Prices </a>
+        <a href="https://www.globalair.com/airport/fuel-prices.aspx" target="_blank" class="resource-link">GlobalAir Fuel </a>
+        <a href="https://100ll.com" target="_blank" class="resource-link">100LL.com </a>
       </div>
 
       <div class="section-divider"></div>
 
       <h3 class="sub-heading">Flight Planning Tools</h3>
       <div class="resource-links">
-        <a href="https://skyvector.com" target="_blank" class="resource-link">SkyVector ↗</a>
-        <a href="https://www.foreflight.com" target="_blank" class="resource-link">ForeFlight ↗</a>
-        <a href="https://fltplan.com" target="_blank" class="resource-link">FltPlan.com ↗</a>
-        <a href="https://autorouter.aero" target="_blank" class="resource-link">AutoRouter ICAO ↗</a>
-        <a href="https://www.simbrief.com" target="_blank" class="resource-link">SimBrief ↗</a>
+        <a href="https://skyvector.com" target="_blank" class="resource-link">SkyVector </a>
+        <a href="https://www.foreflight.com" target="_blank" class="resource-link">ForeFlight </a>
+        <a href="https://fltplan.com" target="_blank" class="resource-link">FltPlan.com </a>
+        <a href="https://autorouter.aero" target="_blank" class="resource-link">AutoRouter ICAO </a>
+        <a href="https://www.simbrief.com" target="_blank" class="resource-link">SimBrief </a>
       </div>
     </section>
 
@@ -376,11 +396,11 @@
       <div class="far-categories" id="farCategories"></div>
       <div class="section-divider"></div>
       <div class="resource-links">
-        <a href="https://www.ecfr.gov/current/title-14" target="_blank" class="resource-link">eCFR Title 14 ↗</a>
-        <a href="https://www.faa.gov/air_traffic/publications/atpubs/aim_html/" target="_blank" class="resource-link">FAA AIM Online ↗</a>
-        <a href="https://www.faa.gov/regulations_policies/advisory_circulars/" target="_blank" class="resource-link">Advisory Circulars ↗</a>
-        <a href="https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/" target="_blank" class="resource-link">FAA Handbooks ↗</a>
-        <a href="https://skybrary.aero" target="_blank" class="resource-link">SKYbrary ↗</a>
+        <a href="https://www.ecfr.gov/current/title-14" target="_blank" class="resource-link">eCFR Title 14 </a>
+        <a href="https://www.faa.gov/air_traffic/publications/atpubs/aim_html/" target="_blank" class="resource-link">FAA AIM Online </a>
+        <a href="https://www.faa.gov/regulations_policies/advisory_circulars/" target="_blank" class="resource-link">Advisory Circulars </a>
+        <a href="https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/" target="_blank" class="resource-link">FAA Handbooks </a>
+        <a href="https://skybrary.aero" target="_blank" class="resource-link">SKYbrary </a>
       </div>
     </section>
 
@@ -414,9 +434,9 @@
       </div>
       <div id="adOutput" class="data-output" style="min-height:80px"><p class="hint-text">Opens FAA AD search for the specified make/model in a new tab.</p></div>
       <div class="resource-links" style="margin-top:10px;margin-bottom:20px">
-        <a href="https://rgl.faa.gov/Regulatory_and_Guidance_Library/rgAD.nsf/Frameset?OpenPage" target="_blank" class="resource-link">FAA AD Portal ↗</a>
-        <a href="https://av-info.faa.gov/adportal/AdPortal.aspx" target="_blank" class="resource-link">Legacy AD Search ↗</a>
-        <a href="https://drs.faa.gov/drsdocid/html/public/Type.do?type=AD" target="_blank" class="resource-link">AD by Registration ↗</a>
+        <a href="https://rgl.faa.gov/Regulatory_and_Guidance_Library/rgAD.nsf/Frameset?OpenPage" target="_blank" class="resource-link">FAA AD Portal </a>
+        <a href="https://av-info.faa.gov/adportal/AdPortal.aspx" target="_blank" class="resource-link">Legacy AD Search </a>
+        <a href="https://drs.faa.gov/drsdocid/html/public/Type.do?type=AD" target="_blank" class="resource-link">AD by Registration </a>
       </div>
 
       <div class="section-divider"></div>
@@ -428,10 +448,10 @@
       </div>
       <div id="ntsbOutput" class="data-output" style="min-height:80px"><p class="hint-text">Query NTSB accident records for safety trend analysis by aircraft type or event type.</p></div>
       <div class="resource-links" style="margin-top:10px;margin-bottom:20px">
-        <a href="https://data.ntsb.gov/carol-main-public/query-entry" target="_blank" class="resource-link">NTSB CAROL Query ↗</a>
-        <a href="https://www.ntsb.gov/Pages/AviationQueryv2.aspx" target="_blank" class="resource-link">NTSB Aviation Search ↗</a>
-        <a href="https://asrs.arc.nasa.gov" target="_blank" class="resource-link">NASA ASRS ↗</a>
-        <a href="https://asias.faa.gov" target="_blank" class="resource-link">FAA ASIAS ↗</a>
+        <a href="https://data.ntsb.gov/carol-main-public/query-entry" target="_blank" class="resource-link">NTSB CAROL Query </a>
+        <a href="https://www.ntsb.gov/Pages/AviationQueryv2.aspx" target="_blank" class="resource-link">NTSB Aviation Search </a>
+        <a href="https://asrs.arc.nasa.gov" target="_blank" class="resource-link">NASA ASRS </a>
+        <a href="https://asias.faa.gov" target="_blank" class="resource-link">FAA ASIAS </a>
       </div>
 
       <div class="section-divider"></div>
@@ -439,8 +459,8 @@
       <h3 class="sub-heading">Service Difficulty Reports (SDR)</h3>
       <p style="font-size:13px;color:var(--text-secondary);font-family:var(--font-body);margin-bottom:12px">SDRs document mechanical defects and failures found during maintenance, searchable by aircraft make/model/component.</p>
       <div class="resource-links" style="margin-bottom:20px">
-        <a href="https://av-info.faa.gov/sdrx/" target="_blank" class="resource-link">FAA SDR Database ↗</a>
-        <a href="https://www.faa.gov/aircraft/air_cert/design_approvals/air_software/cast/cast_papers/" target="_blank" class="resource-link">CAST Safety Papers ↗</a>
+        <a href="https://av-info.faa.gov/sdrx/" target="_blank" class="resource-link">FAA SDR Database </a>
+        <a href="https://www.faa.gov/aircraft/air_cert/design_approvals/air_software/cast/cast_papers/" target="_blank" class="resource-link">CAST Safety Papers </a>
       </div>
 
       <div class="section-divider"></div>
@@ -454,7 +474,7 @@
         <h2>Checklists</h2>
         <button class="btn-secondary" onclick="newChecklist()">+ NEW</button>
       </div>
-      <div class="checklist-note">⚠️ <strong>Memory-aid only.</strong> Always follow your aircraft's official POH checklist.</div>
+      <div class="checklist-note">! <strong>Memory-aid only.</strong> Always follow your aircraft's official POH checklist.</div>
       <div class="checklist-tabs" id="checklistTabs"></div>
       <div id="checklistContent" class="checklist-display"></div>
     </section>
@@ -464,7 +484,7 @@
       <div class="section-header"><h2>Weight &amp; Balance Calculator</h2></div>
 
       <div class="wb-disclaimer">
-        ⚠️ <strong>Reference only.</strong> Always use your aircraft's current AFM/POH for official W&amp;B computations. Empty weight and arm must be taken from your aircraft's actual weight &amp; balance record.
+        ! <strong>Reference only.</strong> Always use your aircraft's current AFM/POH for official W&amp;B computations. Empty weight and arm must be taken from your aircraft's actual weight &amp; balance record.
       </div>
 
       <!-- Aircraft selector -->
@@ -521,7 +541,7 @@
 
       <!-- SUNRISE / SUNSET -->
       <div class="optools-section">
-        <h3 class="sub-heading">☀️ Sunrise / Sunset & Night Currency</h3>
+        <h3 class="sub-heading">Sunrise / Sunset & Night Currency</h3>
         <div class="optools-form">
           <div class="optools-row">
             <div>
@@ -555,7 +575,7 @@
 
       <!-- HOVER PERFORMANCE -->
       <div class="optools-section">
-        <h3 class="sub-heading">🚁 Helicopter Hover Performance (HIGE / HOGE)</h3>
+        <h3 class="sub-heading">Helicopter Hover Performance (HIGE / HOGE)</h3>
         <div class="optools-form">
           <div class="optools-row">
             <div>
@@ -590,8 +610,8 @@
 
       <!-- ICAO FLIGHT PLAN BUILDER -->
       <div class="optools-section">
-        <h3 class="sub-heading">📋 ICAO Flight Plan Builder</h3>
-        <div class="fp-disclaimer">Always file via an authorized ATC unit or <a href="https://www.1800wxbrief.com/Website/flightPlan" target="_blank" style="color:var(--accent)">1800wxbrief.com ↗</a>. This tool generates the formatted text only.</div>
+        <h3 class="sub-heading">ICAO Flight Plan Builder</h3>
+        <div class="fp-disclaimer">Always file via an authorized ATC unit or <a href="https://www.1800wxbrief.com/Website/flightPlan" target="_blank" style="color:var(--accent)">1800wxbrief.com </a>. This tool generates the formatted text only.</div>
 
         <div class="fp-grid">
           <div class="fp-field">
@@ -734,12 +754,12 @@
             <label>Value</label><input type="number" id="uc_val" value="100" oninput="calcUnit()"/>
             <label>Convert</label>
             <select id="uc_type" onchange="calcUnit()">
-              <option value="kts_mph">Knots → MPH</option><option value="mph_kts">MPH → Knots</option>
-              <option value="kts_kph">Knots → KPH</option><option value="nm_sm">NM → SM</option>
-              <option value="sm_nm">SM → NM</option><option value="ft_m">Feet → Meters</option>
-              <option value="m_ft">Meters → Feet</option><option value="c_f">°C → °F</option>
-              <option value="f_c">°F → °C</option><option value="hpa_inhg">hPa → inHg</option>
-              <option value="inhg_hpa">inHg → hPa</option>
+              <option value="kts_mph">Knots  MPH</option><option value="mph_kts">MPH  Knots</option>
+              <option value="kts_kph">Knots  KPH</option><option value="nm_sm">NM  SM</option>
+              <option value="sm_nm">SM  NM</option><option value="ft_m">Feet  Meters</option>
+              <option value="m_ft">Meters  Feet</option><option value="c_f">°C  °F</option>
+              <option value="f_c">°F  °C</option><option value="hpa_inhg">hPa  inHg</option>
+              <option value="inhg_hpa">inHg  hPa</option>
             </select>
             <div class="tool-result" id="uc_result">—</div>
           </div>
@@ -774,12 +794,12 @@
       <div class="section-divider"></div>
       <h3 class="sub-heading">External Resources</h3>
       <div class="resource-links">
-        <a href="https://skyvector.com" target="_blank" class="resource-link">SkyVector ↗</a>
-        <a href="https://www.airnav.com" target="_blank" class="resource-link">AirNav ↗</a>
-        <a href="https://www.flightaware.com" target="_blank" class="resource-link">FlightAware ↗</a>
-        <a href="https://asrs.arc.nasa.gov" target="_blank" class="resource-link">NASA ASRS ↗</a>
-        <a href="https://skybrary.aero" target="_blank" class="resource-link">SKYbrary ↗</a>
-        <a href="https://faasafety.gov" target="_blank" class="resource-link">FAASTeam ↗</a>
+        <a href="https://skyvector.com" target="_blank" class="resource-link">SkyVector </a>
+        <a href="https://www.airnav.com" target="_blank" class="resource-link">AirNav </a>
+        <a href="https://www.flightaware.com" target="_blank" class="resource-link">FlightAware </a>
+        <a href="https://asrs.arc.nasa.gov" target="_blank" class="resource-link">NASA ASRS </a>
+        <a href="https://skybrary.aero" target="_blank" class="resource-link">SKYbrary </a>
+        <a href="https://faasafety.gov" target="_blank" class="resource-link">FAASTeam </a>
       </div>
     </section>
 

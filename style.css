@@ -780,7 +780,7 @@ html, body {
 }
 
 .checklist-item.checked .cl-checkbox::after {
-  content: '✓';
+  content: '';
   color: #000;
   font-size: 10px;
   font-weight: 700;
@@ -2128,3 +2128,91 @@ button.reset-cl:hover { color: var(--danger); border-color: var(--danger); }
   padding:14px 16px; font-family:var(--font-data); font-size:12px; color:var(--text-data);
   line-height:1.8; white-space:pre-wrap; overflow-x:auto;
 }
+
+/* ===== ATC TOWER LOGO ===== */
+.logo-tower {
+  width: 28px;
+  height: 35px;
+  color: var(--accent);
+  filter: drop-shadow(0 0 6px rgba(0,212,255,0.5));
+  flex-shrink: 0;
+}
+
+/* ===== CLEAN REPLACEMENTS FOR REMOVED EMOJIS ===== */
+
+/* WX link card code badges */
+.wl-code {
+  font-family: var(--font-data);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--accent);
+  background: rgba(0,212,255,0.1);
+  border: 1px solid rgba(0,212,255,0.25);
+  border-radius: 3px;
+  padding: 3px 7px;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+/* Fleet status dots */
+.dot-air {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--success);
+  background: rgba(0,255,136,0.1);
+  border: 1px solid rgba(0,255,136,0.25);
+  border-radius: 2px;
+  padding: 1px 5px;
+}
+
+.dot-gnd {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--warn);
+  background: rgba(255,184,0,0.1);
+  border: 1px solid rgba(255,184,0,0.25);
+  border-radius: 2px;
+  padding: 1px 5px;
+}
+
+.dot-unk {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  padding: 1px 5px;
+}
+
+/* TFR badge replacing emoji */
+.tfr-badge {
+  font-family: var(--font-data);
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: var(--danger);
+  background: rgba(255,56,56,0.1);
+  border: 2px solid rgba(255,56,56,0.3);
+  border-radius: var(--radius);
+  padding: 6px 12px;
+  flex-shrink: 0;
+}
+
+/* Alert badge replacing emoji */
+.fleet-alert-badge {
+  font-family: var(--font-data);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--warn);
+  background: rgba(255,184,0,0.1);
+  border: 1px solid rgba(255,184,0,0.3);
+  border-radius: 2px;
+  padding: 1px 6px;
+  flex-shrink: 0;
+}
+
+/* Refresh / action button icons — text replacements */
+.btn-icon { font-family: var(--font-data); font-size: 11px; }

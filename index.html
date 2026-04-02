@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AviOps — Aviation Operations Dashboard</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="scanline-overlay"></div>
+
+  <header class="app-header">
+    <div class="header-left">
+      <div class="logo-block">
+        <span class="logo-icon">✈</span>
+        <span class="logo-text">AVI<span class="logo-accent">OPS</span></span>
+      </div>
+      <div class="header-subtitle">Aviation Operations Center</div>
+    </div>
+    <div class="header-center">
+      <div class="zulu-clock" id="zuluClock">0000Z</div>
+      <div class="local-clock" id="localClock">LOCAL: 00:00</div>
+    </div>
+    <div class="header-right">
+      <div class="status-pill"><span class="status-dot"></span> LIVE</div>
+    </div>
+  </header>
+
+  <nav class="tab-bar">
+    <span class="tab-group-label">WEATHER</span>
+    <button class="tab-btn active" data-tab="weather">WX</button>
+    <button class="tab-btn" data-tab="metar">METAR/TAF</button>
+    <button class="tab-btn" data-tab="pireps">PIREPs</button>
+    <button class="tab-btn" data-tab="wxadvanced">WX+</button>
+    <span class="tab-group-label">AIRSPACE</span>
+    <button class="tab-btn" data-tab="notams">NOTAMs</button>
+    <button class="tab-btn" data-tab="tfr">TFRs</button>
+    <button class="tab-btn" data-tab="charts">CHARTS</button>
+    <button class="tab-btn" data-tab="traffic">TRAFFIC</button>
+    <span class="tab-group-label">AIRPORTS</span>
+    <button class="tab-btn" data-tab="airport">AIRPORT INFO</button>
+    <button class="tab-btn" data-tab="flightplan">FLIGHT PLAN</button>
+    <span class="tab-group-label">REFERENCE</span>
+    <button class="tab-btn" data-tab="regulations">FAR/AIM</button>
+    <button class="tab-btn" data-tab="poh">POH/PERF</button>
+    <button class="tab-btn" data-tab="airworthiness">AIRWORTHINESS</button>
+    <span class="tab-group-label">OPS</span>
+    <button class="tab-btn" data-tab="checklist">CHECKLISTS</button>
+    <button class="tab-btn" data-tab="weight">W&amp;B/FUEL</button>
+    <button class="tab-btn" data-tab="tools">TOOLS</button>
+  </nav>
+
+  <main class="app-body">
+
+    <!-- WEATHER -->
+    <section class="tab-content active" id="tab-weather">
+      <div class="section-header">
+        <h2>Weather Overview</h2>
+        <div class="search-bar">
+          <input type="text" id="wxAirport" placeholder="ICAO (e.g. KDFW)" maxlength="4" />
+          <button class="btn-primary" onclick="loadWeatherOverview()">FETCH</button>
+        </div>
+      </div>
+      <div class="wx-grid" id="wxGrid">
+        <div class="wx-card placeholder-card"><div class="placeholder-text">Enter an airport identifier above to load weather data.</div></div>
+      </div>
+      <div class="section-divider"></div>
+      <h3 class="sub-heading">Aviation Weather Depictions</h3>
+      <div class="wx-links-grid">
+        <a class="wx-link-card" href="https://www.aviationweather.gov/gfa" target="_blank"><span class="wl-icon">🌐</span><span class="wl-label">GFA Tool<br><small>Graphical Forecast</small></span></a>
+        <a class="wx-link-card" href="https://www.aviationweather.gov/sigmet" target="_blank"><span class="wl-icon">⚠️</span><span class="wl-label">SIGMETs<br><small>Significant Met</small></span></a>
+        <a class="wx-link-card" href="https://www.aviationweather.gov/airmet" target="_blank"><span class="wl-icon">🔶</span><span class="wl-label">AIRMETs<br><small>Airmen's Met Info</small></span></a>
+        <a class="wx-link-card" href="https://www.aviationweather.gov/windtemp" target="_blank"><span class="wl-icon">💨</span><span class="wl-label">Winds Aloft<br><small>FB Forecasts</small></span></a>
+        <a class="wx-link-card" href="https://www.aviationweather.gov/fcstdisc" target="_blank"><span class="wl-icon">📋</span><span class="wl-label">Area Forecast<br><small>FA Discussion</small></span></a>
+        <a class="wx-link-card" href="https://www.aviationweather.gov/icing" target="_blank"><span class="wl-icon">🧊</span><span class="wl-label">Icing<br><small>CIP / FIP</small></span></a>
+        <a class="wx-link-card" href="https://www.aviationweather.gov/turbulence" target="_blank"><span class="wl-icon">〰️</span><span class="wl-label">Turbulence<br><small>GTG Products</small></span></a>
+        <a class="wx-link-card" href="https://www.aviationweather.gov/convective" target="_blank"><span class="wl-icon">⛈️</span><span class="wl-label">Convective<br><small>Outlook / SWO</small></span></a>
+      </div>
+    </section>
+
+    <!-- METAR/TAF -->
+    <section class="tab-content" id="tab-metar">
+      <div class="section-header">
+        <h2>METAR / TAF</h2>
+        <div class="search-bar">
+          <input type="text" id="metarInput" placeholder="ICAO (e.g. KORD)" maxlength="4" />
+          <button class="btn-primary" onclick="loadMetarTaf()">FETCH</button>
+        </div>
+      </div>
+      <div id="metarOutput" class="data-output"><p class="hint-text">Enter an ICAO airport identifier and press FETCH.</p></div>
+    </section>
+
+    <!-- PIREPs -->
+    <section class="tab-content" id="tab-pireps">
+      <div class="section-header">
+        <h2>PIREPs — Pilot Reports</h2>
+        <div class="search-bar">
+          <input type="text" id="pirepInput" placeholder="ICAO (e.g. KORD)" maxlength="4"/>
+          <button class="btn-primary" onclick="loadPireps()">FETCH</button>
+        </div>
+      </div>
+      <div class="pirep-legend">
+        <span class="pirep-badge turb-none">NO TURB</span>
+        <span class="pirep-badge turb-light">LIGHT</span>
+        <span class="pirep-badge turb-mod">MOD</span>
+        <span class="pirep-badge turb-sev">SEV</span>
+        <span class="pirep-badge ice-light">ICE-LIGHT</span>
+        <span class="pirep-badge ice-mod">ICE-MOD</span>
+      </div>
+      <div id="pirepOutput" class="data-output"><p class="hint-text">Fetch PIREPs for a location to view pilot weather reports.</p></div>
+    </section>
+
+    <!-- WX+ ADVANCED -->
+    <section class="tab-content" id="tab-wxadvanced">
+      <div class="section-header"><h2>Advanced Weather</h2></div>
+
+      <h3 class="sub-heading">ASOS / AWOS Station Finder</h3>
+      <div class="search-bar" style="margin-bottom:12px">
+        <input type="text" id="asosInput" placeholder="State abbreviation (e.g. TX) or ICAO" style="width:240px"/>
+        <button class="btn-primary" onclick="loadASOSStations()">SEARCH</button>
+      </div>
+      <div id="asosOutput" class="data-output" style="min-height:80px"><p class="hint-text">Search for ASOS/AWOS stations by state abbreviation or airport identifier.</p></div>
+      <div class="resource-links" style="margin-top:10px;margin-bottom:4px">
+        <a href="https://www.faa.gov/air_traffic/weather/asos/" target="_blank" class="resource-link">FAA ASOS Program ↗</a>
+        <a href="https://www.nws.noaa.gov/asos/" target="_blank" class="resource-link">NWS ASOS ↗</a>
+        <a href="https://mesonet.agron.iastate.edu/request/download.phtml" target="_blank" class="resource-link">Iowa State ASOS Archive ↗</a>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h3 class="sub-heading">Upper Air Soundings (Rawinsondes)</h3>
+      <p style="font-size:13px;color:var(--text-secondary);font-family:var(--font-body);margin-bottom:12px">Essential for icing layer analysis, turbulence altitude, and wind shear assessment. Data from University of Wyoming archive.</p>
+      <div class="search-bar" style="margin-bottom:12px">
+        <input type="text" id="soundingStation" placeholder="Station ID (e.g. OUN, FFC, ABQ)" style="width:180px"/>
+        <select id="soundingType" style="background:var(--bg-card);border:1px solid var(--border-bright);color:var(--text-primary);padding:8px 10px;border-radius:4px;font-family:var(--font-data);font-size:13px">
+          <option value="TEXT%3ALIST">Sounding Text</option>
+          <option value="GIF%3ASKEWT">Skew-T Plot (GIF)</option>
+          <option value="GIF%3AHODOGRAPH">Hodograph</option>
+        </select>
+        <button class="btn-primary" onclick="openSounding()">OPEN</button>
+      </div>
+      <div class="sounding-grid" id="soundingStationsGrid"></div>
+
+      <div class="section-divider"></div>
+
+      <h3 class="sub-heading">Prog Charts — Surface Analysis &amp; Forecasts</h3>
+      <div class="prog-chart-grid">
+        <a class="prog-chart-card" href="https://www.wpc.ncep.noaa.gov/basicwx/basicwx_wbg.php" target="_blank"><div class="pc-title">Surface Analysis</div><div class="pc-sub">Current NWS WPC surface analysis</div></a>
+        <a class="prog-chart-card" href="https://www.wpc.ncep.noaa.gov/basicwx/day0-7loop.gif" target="_blank"><div class="pc-title">12-hr Prog</div><div class="pc-sub">12-hour forecast prog chart</div></a>
+        <a class="prog-chart-card" href="https://www.wpc.ncep.noaa.gov/basicwx/day1-5loop.gif" target="_blank"><div class="pc-title">24/48-hr Prog</div><div class="pc-sub">Extended forecast charts</div></a>
+        <a class="prog-chart-card" href="https://www.aviationweather.gov/gfa#prog" target="_blank"><div class="pc-title">Aviation Prog (GFA)</div><div class="pc-sub">AWC Graphical Forecast for Aviation</div></a>
+        <a class="prog-chart-card" href="https://www.spc.noaa.gov/products/outlook/" target="_blank"><div class="pc-title">SPC Convective Outlook</div><div class="pc-sub">Storm Prediction Center severe wx</div></a>
+        <a class="prog-chart-card" href="https://www.nhc.noaa.gov" target="_blank"><div class="pc-title">NHC Tropical</div><div class="pc-sub">Hurricane &amp; tropical advisories</div></a>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h3 class="sub-heading">Satellite, Radar &amp; Specialized Products</h3>
+      <div class="sat-radar-grid">
+        <div class="sat-card">
+          <div class="sat-card-title">🛰 GOES Satellite</div>
+          <div class="sat-card-sub">GOES-East/West visible, IR, and water vapor imagery</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+            <a href="https://www.star.nesdis.noaa.gov/goes/conus.php" target="_blank" class="btn-primary" style="text-decoration:none">GOES Viewer ↗</a>
+            <a href="https://www.aviationweather.gov/satellite" target="_blank" class="btn-secondary" style="text-decoration:none">AWC Satellite ↗</a>
+          </div>
+        </div>
+        <div class="sat-card">
+          <div class="sat-card-title">📡 NWS Radar Mosaic</div>
+          <div class="sat-card-sub">National composite radar (RIDGE2) and local NEXRAD</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+            <a href="https://www.radar.weather.gov/region/conus/standard" target="_blank" class="btn-primary" style="text-decoration:none">NWS Radar ↗</a>
+            <a href="https://www.aviationweather.gov/radar" target="_blank" class="btn-secondary" style="text-decoration:none">AWC Radar ↗</a>
+          </div>
+        </div>
+        <div class="sat-card">
+          <div class="sat-card-title">🌋 Volcanic Ash / Int'l SIGMET</div>
+          <div class="sat-card-sub">Washington VAAC advisories — critical for international &amp; Pacific operations</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+            <a href="https://www.ssd.noaa.gov/VAAC/WESTERN/archive.html" target="_blank" class="btn-primary" style="text-decoration:none">Washington VAAC ↗</a>
+            <a href="https://www.aviationweather.gov/sigmet/intl" target="_blank" class="btn-secondary" style="text-decoration:none">Int'l SIGMETs ↗</a>
+          </div>
+        </div>
+        <div class="sat-card">
+          <div class="sat-card-title">🌡 BLIPMAP — Boundary Layer</div>
+          <div class="sat-card-sub">Thermal &amp; boundary layer forecasts — key for low-level helicopter ops and soaring condition analysis</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+            <a href="https://www.drjack.net/BLIP/USNAM/FCST/" target="_blank" class="btn-primary" style="text-decoration:none">Dr. Jack BLIPMAP ↗</a>
+            <a href="https://forecast.weather.gov" target="_blank" class="btn-secondary" style="text-decoration:none">NWS Point Forecast ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOTAMs -->
+    <section class="tab-content" id="tab-notams">
+      <div class="section-header">
+        <h2>NOTAMs</h2>
+        <div class="search-bar">
+          <input type="text" id="notamInput" placeholder="ICAO / Location (e.g. KDFW)" maxlength="4"/>
+          <button class="btn-primary" onclick="loadNotams()">FETCH</button>
+        </div>
+      </div>
+      <div class="notam-filter-bar">
+        <span class="filter-label">FILTER:</span>
+        <button class="filter-btn active" data-filter="all">ALL</button>
+        <button class="filter-btn" data-filter="RWY">RUNWAY</button>
+        <button class="filter-btn" data-filter="NAV">NAV AIDS</button>
+        <button class="filter-btn" data-filter="ODP">ODP/SID/STAR</button>
+        <button class="filter-btn" data-filter="AD">AIRSPACE</button>
+      </div>
+      <div id="notamOutput" class="data-output"><p class="hint-text">Enter a location identifier to fetch NOTAMs.</p></div>
+      <div class="notam-external">
+        <h3 class="sub-heading">Official NOTAM Resources</h3>
+        <div class="resource-links">
+          <a href="https://notams.aim.faa.gov/notamSearch/" target="_blank" class="resource-link">FAA NOTAM Search ↗</a>
+          <a href="https://pilotweb.nas.faa.gov/PilotWeb/" target="_blank" class="resource-link">PilotWeb ↗</a>
+          <a href="https://www.1800wxbrief.com" target="_blank" class="resource-link">1800wxbrief.com ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- TFRs -->
+    <section class="tab-content" id="tab-tfr">
+      <div class="section-header"><h2>Temporary Flight Restrictions</h2></div>
+      <div class="tfr-info-card">
+        <div class="tfr-icon">🚫</div>
+        <div class="tfr-desc"><strong>TFRs require real-time official sources.</strong> Always check directly with FAA TFR tools and 1800wxbrief before flight.</div>
+      </div>
+      <div class="tfr-links">
+        <a class="tfr-card" href="https://tfr.faa.gov/tfr2/list.jsp" target="_blank"><div class="tfr-card-title">FAA TFR List</div><div class="tfr-card-sub">Active &amp; upcoming TFRs nationwide</div></a>
+        <a class="tfr-card" href="https://tfr.faa.gov/tfr_map_ims/html/index.html" target="_blank"><div class="tfr-card-title">TFR Map</div><div class="tfr-card-sub">Interactive TFR map viewer</div></a>
+        <a class="tfr-card" href="https://www.1800wxbrief.com/Website/tfr" target="_blank"><div class="tfr-card-title">1800wxbrief TFR</div><div class="tfr-card-sub">Integrated with flight briefings</div></a>
+        <a class="tfr-card" href="https://skyvector.com" target="_blank"><div class="tfr-card-title">SkyVector</div><div class="tfr-card-sub">Charts with TFR &amp; airspace overlay</div></a>
+        <a class="tfr-card" href="https://sua.faa.gov/sua/siteFrame.app" target="_blank"><div class="tfr-card-title">SUA Status</div><div class="tfr-card-sub">MOA / Restricted Area hot/cold status</div></a>
+      </div>
+      <div class="section-divider"></div>
+      <h3 class="sub-heading">Common TFR Types Reference</h3>
+      <div class="tfr-types-grid" id="tfrTypesGrid"></div>
+    </section>
+
+    <!-- CHARTS -->
+    <section class="tab-content" id="tab-charts">
+      <div class="section-header"><h2>Charts &amp; Navigation</h2></div>
+
+      <h3 class="sub-heading">SkyVector — Live Chart Viewer</h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
+        <input type="text" id="svRoute" placeholder="Airport or route (e.g. KDFW KHOU)" style="background:var(--bg-card);border:1px solid var(--border-bright);color:var(--text-primary);padding:8px 14px;border-radius:4px;font-family:var(--font-data);font-size:13px;width:260px"/>
+        <button class="btn-primary" onclick="loadSkyVector()">LOAD</button>
+        <button class="btn-secondary" onclick="document.getElementById('svFrame').src='https://skyvector.com/?ll=39.8,-98.5&chart=301&zoom=4'">RESET</button>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+        <button class="filter-btn active" onclick="setSVChart('301',this)">VFR Sectional</button>
+        <button class="filter-btn" onclick="setSVChart('302',this)">IFR Low</button>
+        <button class="filter-btn" onclick="setSVChart('303',this)">IFR High</button>
+        <button class="filter-btn" onclick="setSVChart('304',this)">TAC</button>
+        <button class="filter-btn" onclick="setSVChart('305',this)">World</button>
+      </div>
+      <div class="iframe-container">
+        <iframe id="svFrame" src="https://skyvector.com/?ll=39.8,-98.5&chart=301&zoom=4" allowfullscreen title="SkyVector"></iframe>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:var(--text-secondary)">© SkyVector. For full functionality: <a href="https://skyvector.com" target="_blank" style="color:var(--accent)">skyvector.com ↗</a></div>
+
+      <div class="section-divider"></div>
+
+      <h3 class="sub-heading">Airport Diagram Lookup</h3>
+      <div class="search-bar" style="margin-bottom:12px">
+        <input type="text" id="diagInput" placeholder="ICAO (e.g. KDFW)" maxlength="4"/>
+        <button class="btn-primary" onclick="openAirportDiagram()">OPEN DIAGRAM</button>
+      </div>
+      <div id="diagOutput"></div>
+
+      <div class="section-divider"></div>
+
+      <h3 class="sub-heading">FAA Chart Downloads</h3>
+      <div class="chart-download-grid" id="chartDownloadGrid"></div>
+
+      <div class="section-divider"></div>
+
+      <h3 class="sub-heading">Special Use Airspace</h3>
+      <div class="tfr-links">
+        <a class="tfr-card" href="https://sua.faa.gov/sua/siteFrame.app" target="_blank"><div class="tfr-card-title">SUA Status Tool</div><div class="tfr-card-sub">R / W / MOA / A / P real-time status</div></a>
+        <a class="tfr-card" href="https://www.faa.gov/air_traffic/publications/atpubs/aip_html/part2_enr_section_5.1.html" target="_blank"><div class="tfr-card-title">SUA AIP Listing</div><div class="tfr-card-sub">Official published SUA coordinates</div></a>
+      </div>
+    </section>
+
+    <!-- LIVE TRAFFIC -->
+    <section class="tab-content" id="tab-traffic">
+      <div class="section-header"><h2>Live Traffic — ADS-B</h2></div>
+      <div class="traffic-warning">
+        <span>⚠️</span>
+        <span>For situational awareness only. Not all aircraft are ADS-B equipped. Do not use as sole collision avoidance tool.</span>
+      </div>
+
+      <h3 class="sub-heading" style="margin-top:16px">ADS-B Exchange — Live Global Traffic</h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+        <input type="text" id="adsb_icao" placeholder="Hex ICAO or registration (e.g. A12345)" style="background:var(--bg-card);border:1px solid var(--border-bright);color:var(--text-primary);padding:8px 14px;border-radius:4px;font-family:var(--font-data);font-size:13px;width:260px"/>
+        <button class="btn-primary" onclick="searchADSB()">TRACK AIRCRAFT</button>
+        <button class="btn-secondary" onclick="loadDefaultADSB()">SHOW LIVE MAP</button>
+      </div>
+      <div class="iframe-container" style="height:480px">
+        <iframe id="adsbFrame" src="about:blank" allowfullscreen title="ADS-B Live Traffic" style="background:var(--bg-secondary)"></iframe>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:var(--text-secondary)">Data © ADS-B Exchange contributors. <a href="https://globe.adsbexchange.com" target="_blank" style="color:var(--accent)">Open full viewer ↗</a></div>
+
+      <div class="section-divider"></div>
+
+      <h3 class="sub-heading">OpenSky Network — Aircraft State Lookup</h3>
+      <div class="search-bar" style="margin-bottom:12px">
+        <input type="text" id="openskyIcao" placeholder="ICAO24 hex (e.g. a0b1c2)" maxlength="8"/>
+        <button class="btn-primary" onclick="lookupOpenSky()">LOOKUP</button>
+      </div>
+      <div id="openskyOutput" class="data-output" style="min-height:80px"><p class="hint-text">Enter an ICAO24 hex code to query live aircraft state from OpenSky Network (no auth required for public data).</p></div>
+
+      <div class="section-divider"></div>
+      <h3 class="sub-heading">Tracking Resources</h3>
+      <div class="resource-links">
+        <a href="https://globe.adsbexchange.com" target="_blank" class="resource-link">ADS-B Exchange ↗</a>
+        <a href="https://opensky-network.org" target="_blank" class="resource-link">OpenSky Network ↗</a>
+        <a href="https://www.flightaware.com" target="_blank" class="resource-link">FlightAware ↗</a>
+        <a href="https://www.flightradar24.com" target="_blank" class="resource-link">Flightradar24 ↗</a>
+        <a href="https://www.faa.gov/air_traffic/nas_status/" target="_blank" class="resource-link">FAA NAS Status ↗</a>
+      </div>
+    </section>
+
+    <!-- AIRPORT INFO -->
+    <section class="tab-content" id="tab-airport">
+      <div class="section-header">
+        <h2>Airport Information</h2>
+        <div class="search-bar">
+          <input type="text" id="apInfoInput" placeholder="ICAO (e.g. KDFW)" maxlength="4"/>
+          <button class="btn-primary" onclick="loadAirportInfo()">FETCH</button>
+        </div>
+      </div>
+      <div id="apInfoOutput" class="data-output" style="min-height:100px"><p class="hint-text">Enter an ICAO identifier to load airport data — runways, elevation, frequencies, and services.</p></div>
+
+      <div class="section-divider"></div>
+
+      <h3 class="sub-heading">D-ATIS / Digital ATIS</h3>
+      <div class="search-bar" style="margin-bottom:12px">
+        <input type="text" id="atisInput" placeholder="ICAO (e.g. KJFK)" maxlength="4"/>
+        <button class="btn-primary" onclick="loadATIS()">FETCH ATIS</button>
+      </div>
+      <div id="atisOutput" class="data-output" style="min-height:80px"><p class="hint-text">D-ATIS available for major airports. Smaller fields may not have digital ATIS.</p></div>
+
+      <div class="section-divider"></div>
+
+      <h3 class="sub-heading">FAA Chart Supplement (A/FD) — by Region</h3>
+      <p style="font-size:13px;color:var(--text-secondary);font-family:var(--font-body);margin-bottom:12px">Updated every 56 days. Contains airport services, frequencies, remarks, and special notices.</p>
+      <div class="afd-grid" id="afdGrid"></div>
+
+      <div class="section-divider"></div>
+      <h3 class="sub-heading">Airport Resources</h3>
+      <div class="resource-links">
+        <a href="https://ourairports.com" target="_blank" class="resource-link">OurAirports.com ↗</a>
+        <a href="https://www.airnav.com" target="_blank" class="resource-link">AirNav ↗</a>
+        <a href="https://www.aopa.org/destinations/airports" target="_blank" class="resource-link">AOPA Airport Directory ↗</a>
+        <a href="https://www.faa.gov/air_traffic/flight_info/aeronav/digital_products/dafd/" target="_blank" class="resource-link">FAA Chart Supplement ↗</a>
+      </div>
+    </section>
+
+    <!-- FLIGHT PLANNING -->
+    <section class="tab-content" id="tab-flightplan">
+      <div class="section-header"><h2>Flight Planning</h2></div>
+
+      <h3 class="sub-heading">ICAO Flight Plan Filing — 1800wxbrief</h3>
+      <div class="fp-info-card" style="background:rgba(0,212,255,0.05);border:1px solid var(--border-bright);border-radius:4px;padding:14px;margin-bottom:14px;font-family:var(--font-body);font-size:13px;color:var(--text-secondary)">
+        1800wxbrief.com is the official FAA-contracted NOTAM and briefing system. It supports domestic and ICAO international flight plans, weather briefings, and TFR checks.
+      </div>
+      <div class="resource-links" style="margin-bottom:20px">
+        <a href="https://www.1800wxbrief.com/Website/pilotBriefing" target="_blank" class="resource-link">Weather Briefing ↗</a>
+        <a href="https://www.1800wxbrief.com/Website/flightPlan" target="_blank" class="resource-link">File Flight Plan ↗</a>
+        <a href="https://www.1800wxbrief.com/Website/tfr" target="_blank" class="resource-link">TFR Check ↗</a>
+        <a href="https://www.1800wxbrief.com/Website/close" target="_blank" class="resource-link">Close Flight Plan ↗</a>
+        <a href="https://www.1800wxbrief.com/Website/notams" target="_blank" class="resource-link">NOTAMs ↗</a>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h3 class="sub-heading">SUA / MOA Scheduling</h3>
+      <p style="font-size:13px;color:var(--text-secondary);font-family:var(--font-body);margin-bottom:12px">Check Special Use Airspace hot/cold status before routing. Contact the controlling agency (ARTCC or military) for scheduling restricted areas and MOAs.</p>
+      <div class="resource-links" style="margin-bottom:20px">
+        <a href="https://sua.faa.gov/sua/siteFrame.app" target="_blank" class="resource-link">FAA SUA Status ↗</a>
+        <a href="https://www.faa.gov/air_traffic/nas_status/" target="_blank" class="resource-link">NAS Status ↗</a>
+        <a href="https://www.faa.gov/air_traffic/tfm/tfms/" target="_blank" class="resource-link">Traffic Flow Mgmt ↗</a>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h3 class="sub-heading">Fuel Price Lookup</h3>
+      <div class="search-bar" style="margin-bottom:12px">
+        <input type="text" id="fuelPriceInput" placeholder="Airport ICAO (e.g. KDFW)" maxlength="4"/>
+        <button class="btn-primary" onclick="lookupFuelPrices()">LOOKUP</button>
+      </div>
+      <div id="fuelPriceOutput" class="data-output" style="min-height:80px"><p class="hint-text">Opens AirNav fuel prices for the selected airport.</p></div>
+      <div class="resource-links" style="margin-top:10px;margin-bottom:20px">
+        <a href="https://www.airnav.com/fuel/" target="_blank" class="resource-link">AirNav Fuel Prices ↗</a>
+        <a href="https://www.globalair.com/airport/fuel-prices.aspx" target="_blank" class="resource-link">GlobalAir Fuel ↗</a>
+        <a href="https://100ll.com" target="_blank" class="resource-link">100LL.com ↗</a>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h3 class="sub-heading">Flight Planning Tools</h3>
+      <div class="resource-links">
+        <a href="https://skyvector.com" target="_blank" class="resource-link">SkyVector ↗</a>
+        <a href="https://www.foreflight.com" target="_blank" class="resource-link">ForeFlight ↗</a>
+        <a href="https://fltplan.com" target="_blank" class="resource-link">FltPlan.com ↗</a>
+        <a href="https://autorouter.aero" target="_blank" class="resource-link">AutoRouter ICAO ↗</a>
+        <a href="https://www.simbrief.com" target="_blank" class="resource-link">SimBrief ↗</a>
+      </div>
+    </section>
+
+    <!-- FAR/AIM -->
+    <section class="tab-content" id="tab-regulations">
+      <div class="section-header">
+        <h2>FAR / AIM Reference</h2>
+        <div class="search-bar">
+          <input type="text" id="farSearch" placeholder="Search (e.g. VFR minimums, 91.155)"/>
+          <button class="btn-primary" onclick="searchFAR()">SEARCH</button>
+        </div>
+      </div>
+      <div id="farResults" class="data-output" style="margin-bottom:16px;display:none"></div>
+      <div class="far-categories" id="farCategories"></div>
+      <div class="section-divider"></div>
+      <div class="resource-links">
+        <a href="https://www.ecfr.gov/current/title-14" target="_blank" class="resource-link">eCFR Title 14 ↗</a>
+        <a href="https://www.faa.gov/air_traffic/publications/atpubs/aim_html/" target="_blank" class="resource-link">FAA AIM Online ↗</a>
+        <a href="https://www.faa.gov/regulations_policies/advisory_circulars/" target="_blank" class="resource-link">Advisory Circulars ↗</a>
+        <a href="https://www.faa.gov/regulations_policies/handbooks_manuals/aviation/" target="_blank" class="resource-link">FAA Handbooks ↗</a>
+        <a href="https://skybrary.aero" target="_blank" class="resource-link">SKYbrary ↗</a>
+      </div>
+    </section>
+
+    <!-- POH/PERF -->
+    <section class="tab-content" id="tab-poh">
+      <div class="section-header"><h2>POH / Performance Data</h2></div>
+      <div class="poh-intro">Always use your <strong>aircraft-specific POH</strong> as the authoritative source.</div>
+      <div class="poh-selector">
+        <label>Aircraft Category:</label>
+        <div class="selector-btns">
+          <button class="sel-btn active" onclick="showPohCategory('fixedwing', this)">Fixed Wing</button>
+          <button class="sel-btn" onclick="showPohCategory('helicopter', this)">Helicopter</button>
+        </div>
+      </div>
+      <div id="poh-fixedwing" class="poh-category active"><div class="poh-grid" id="pohFixedWingGrid"></div></div>
+      <div id="poh-helicopter" class="poh-category"><div class="poh-grid" id="pohHelicopterGrid"></div></div>
+      <div class="section-divider"></div>
+      <h3 class="sub-heading">Performance Concepts</h3>
+      <div class="perf-cards" id="perfCards"></div>
+    </section>
+
+    <!-- AIRWORTHINESS -->
+    <section class="tab-content" id="tab-airworthiness">
+      <div class="section-header"><h2>Airworthiness &amp; Maintenance</h2></div>
+
+      <h3 class="sub-heading">Airworthiness Directives (AD) Search</h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
+        <input type="text" id="adMake" placeholder="Make (e.g. Cessna, Robinson)" style="background:var(--bg-card);border:1px solid var(--border-bright);color:var(--text-primary);padding:8px 14px;border-radius:4px;font-family:var(--font-data);font-size:13px;width:200px"/>
+        <input type="text" id="adModel" placeholder="Model (e.g. 172, R44)" style="background:var(--bg-card);border:1px solid var(--border-bright);color:var(--text-primary);padding:8px 14px;border-radius:4px;font-family:var(--font-data);font-size:13px;width:160px"/>
+        <button class="btn-primary" onclick="searchADs()">SEARCH ADs</button>
+      </div>
+      <div id="adOutput" class="data-output" style="min-height:80px"><p class="hint-text">Opens FAA AD search for the specified make/model in a new tab.</p></div>
+      <div class="resource-links" style="margin-top:10px;margin-bottom:20px">
+        <a href="https://rgl.faa.gov/Regulatory_and_Guidance_Library/rgAD.nsf/Frameset?OpenPage" target="_blank" class="resource-link">FAA AD Portal ↗</a>
+        <a href="https://av-info.faa.gov/adportal/AdPortal.aspx" target="_blank" class="resource-link">Legacy AD Search ↗</a>
+        <a href="https://drs.faa.gov/drsdocid/html/public/Type.do?type=AD" target="_blank" class="resource-link">AD by Registration ↗</a>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h3 class="sub-heading">NTSB Accident / Incident Database</h3>
+      <div class="search-bar" style="margin-bottom:12px">
+        <input type="text" id="ntsbQuery" placeholder="Aircraft type, event (e.g. R44 autorotation)" style="width:300px"/>
+        <button class="btn-primary" onclick="searchNTSB()">SEARCH</button>
+      </div>
+      <div id="ntsbOutput" class="data-output" style="min-height:80px"><p class="hint-text">Query NTSB accident records for safety trend analysis by aircraft type or event type.</p></div>
+      <div class="resource-links" style="margin-top:10px;margin-bottom:20px">
+        <a href="https://data.ntsb.gov/carol-main-public/query-entry" target="_blank" class="resource-link">NTSB CAROL Query ↗</a>
+        <a href="https://www.ntsb.gov/Pages/AviationQueryv2.aspx" target="_blank" class="resource-link">NTSB Aviation Search ↗</a>
+        <a href="https://asrs.arc.nasa.gov" target="_blank" class="resource-link">NASA ASRS ↗</a>
+        <a href="https://asias.faa.gov" target="_blank" class="resource-link">FAA ASIAS ↗</a>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <h3 class="sub-heading">Service Difficulty Reports (SDR)</h3>
+      <p style="font-size:13px;color:var(--text-secondary);font-family:var(--font-body);margin-bottom:12px">SDRs document mechanical defects and failures found during maintenance, searchable by aircraft make/model/component.</p>
+      <div class="resource-links" style="margin-bottom:20px">
+        <a href="https://av-info.faa.gov/sdrx/" target="_blank" class="resource-link">FAA SDR Database ↗</a>
+        <a href="https://www.faa.gov/aircraft/air_cert/design_approvals/air_software/cast/cast_papers/" target="_blank" class="resource-link">CAST Safety Papers ↗</a>
+      </div>
+
+      <div class="section-divider"></div>
+      <h3 class="sub-heading">Airworthiness Requirements — Quick Reference</h3>
+      <div class="aw-cards-grid" id="awCardsGrid"></div>
+    </section>
+
+    <!-- CHECKLISTS -->
+    <section class="tab-content" id="tab-checklist">
+      <div class="section-header">
+        <h2>Checklists</h2>
+        <button class="btn-secondary" onclick="newChecklist()">+ NEW</button>
+      </div>
+      <div class="checklist-note">⚠️ <strong>Memory-aid only.</strong> Always follow your aircraft's official POH checklist.</div>
+      <div class="checklist-tabs" id="checklistTabs"></div>
+      <div id="checklistContent" class="checklist-display"></div>
+    </section>
+
+    <!-- W&B / FUEL -->
+    <section class="tab-content" id="tab-weight">
+      <div class="section-header"><h2>Weight &amp; Balance / Fuel Planning</h2></div>
+      <div class="wb-section">
+        <h3 class="sub-heading">Weight &amp; Balance Calculator</h3>
+        <div class="wb-form">
+          <div class="wb-row header-row"><span>ITEM</span><span>WEIGHT (lbs)</span><span>ARM (in)</span><span>MOMENT</span></div>
+          <div id="wbItems"></div>
+          <button class="btn-secondary" style="margin-top:10px" onclick="addWBItem()">+ Add Item</button>
+          <div class="wb-totals" id="wbTotals"></div>
+        </div>
+      </div>
+      <div class="section-divider"></div>
+      <div class="fuel-section">
+        <h3 class="sub-heading">Fuel Planning</h3>
+        <div class="fuel-form">
+          <div class="fuel-row"><label>Fuel Type</label>
+            <select id="fuelType" onchange="calcFuel()">
+              <option value="100ll">100LL AvGas (6.0 lbs/gal)</option>
+              <option value="jet-a">Jet-A (6.7 lbs/gal)</option>
+              <option value="mogas">Mogas (6.0 lbs/gal)</option>
+            </select>
+          </div>
+          <div class="fuel-row"><label>Fuel on Board (gal)</label><input type="number" id="fuelGal" value="50" oninput="calcFuel()"/></div>
+          <div class="fuel-row"><label>Fuel Burn Rate (gal/hr)</label><input type="number" id="fuelBurn" value="10" oninput="calcFuel()"/></div>
+          <div class="fuel-row"><label>Reserve (min)</label><input type="number" id="fuelReserve" value="45" oninput="calcFuel()"/></div>
+          <div class="fuel-results" id="fuelResults"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLS -->
+    <section class="tab-content" id="tab-tools">
+      <div class="section-header"><h2>Flight Tools</h2></div>
+      <div class="tools-grid">
+        <div class="tool-card">
+          <h4 class="tool-title">Density Altitude</h4>
+          <div class="tool-form">
+            <label>Field Elevation (ft MSL)</label><input type="number" id="da_elev" value="500" oninput="calcDA()"/>
+            <label>Altimeter Setting (inHg)</label><input type="number" id="da_alt" value="29.92" step="0.01" oninput="calcDA()"/>
+            <label>Temp (°C)</label><input type="number" id="da_temp" value="15" oninput="calcDA()"/>
+            <div class="tool-result" id="da_result">—</div>
+          </div>
+        </div>
+        <div class="tool-card">
+          <h4 class="tool-title">Crosswind / Headwind</h4>
+          <div class="tool-form">
+            <label>Runway Heading (°)</label><input type="number" id="cw_rwy" value="180" oninput="calcCrosswind()"/>
+            <label>Wind Direction (°)</label><input type="number" id="cw_dir" value="220" oninput="calcCrosswind()"/>
+            <label>Wind Speed (kts)</label><input type="number" id="cw_spd" value="15" oninput="calcCrosswind()"/>
+            <div class="tool-result" id="cw_result">—</div>
+          </div>
+        </div>
+        <div class="tool-card">
+          <h4 class="tool-title">Unit Converter</h4>
+          <div class="tool-form">
+            <label>Value</label><input type="number" id="uc_val" value="100" oninput="calcUnit()"/>
+            <label>Convert</label>
+            <select id="uc_type" onchange="calcUnit()">
+              <option value="kts_mph">Knots → MPH</option><option value="mph_kts">MPH → Knots</option>
+              <option value="kts_kph">Knots → KPH</option><option value="nm_sm">NM → SM</option>
+              <option value="sm_nm">SM → NM</option><option value="ft_m">Feet → Meters</option>
+              <option value="m_ft">Meters → Feet</option><option value="c_f">°C → °F</option>
+              <option value="f_c">°F → °C</option><option value="hpa_inhg">hPa → inHg</option>
+              <option value="inhg_hpa">inHg → hPa</option>
+            </select>
+            <div class="tool-result" id="uc_result">—</div>
+          </div>
+        </div>
+        <div class="tool-card wide-card">
+          <h4 class="tool-title">METAR / ATIS Decoder</h4>
+          <div class="tool-form">
+            <label>Paste Raw METAR/ATIS String</label>
+            <textarea id="metar_decode_input" rows="3" placeholder="KORD 121752Z 27015KT 10SM FEW045 BKN250 22/10 A2992 RMK AO2 SLP131"></textarea>
+            <button class="btn-primary" onclick="decodeMetar()">DECODE</button>
+            <div id="metar_decode_output" class="decode-output"></div>
+          </div>
+        </div>
+        <div class="tool-card">
+          <h4 class="tool-title">Pressure Altitude</h4>
+          <div class="tool-form">
+            <label>Field Elevation (ft)</label><input type="number" id="pa_elev" value="500" oninput="calcPA()"/>
+            <label>Altimeter Setting (inHg)</label><input type="number" id="pa_alt" value="29.92" step="0.01" oninput="calcPA()"/>
+            <div class="tool-result" id="pa_result">—</div>
+          </div>
+        </div>
+        <div class="tool-card">
+          <h4 class="tool-title">True Airspeed (TAS)</h4>
+          <div class="tool-form">
+            <label>CAS / IAS (kts)</label><input type="number" id="tas_cas" value="120" oninput="calcTAS()"/>
+            <label>Pressure Altitude (ft)</label><input type="number" id="tas_pa" value="8000" oninput="calcTAS()"/>
+            <label>OAT (°C)</label><input type="number" id="tas_oat" value="5" oninput="calcTAS()"/>
+            <div class="tool-result" id="tas_result">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="section-divider"></div>
+      <h3 class="sub-heading">External Resources</h3>
+      <div class="resource-links">
+        <a href="https://skyvector.com" target="_blank" class="resource-link">SkyVector ↗</a>
+        <a href="https://www.airnav.com" target="_blank" class="resource-link">AirNav ↗</a>
+        <a href="https://www.flightaware.com" target="_blank" class="resource-link">FlightAware ↗</a>
+        <a href="https://asrs.arc.nasa.gov" target="_blank" class="resource-link">NASA ASRS ↗</a>
+        <a href="https://skybrary.aero" target="_blank" class="resource-link">SKYbrary ↗</a>
+        <a href="https://faasafety.gov" target="_blank" class="resource-link">FAASTeam ↗</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <span>AviOps v2 — For reference only. Always verify with official FAA sources. Not for sole use in flight operations.</span>
+    <span>Data: aviationweather.gov | FAA | NTSB | OurAirports | ADS-B Exchange | OpenSky Network</span>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/tools.js"></script>
+  <script src="js/extended.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

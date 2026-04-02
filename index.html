@@ -29,11 +29,13 @@
   </header>
 
   <nav class="tab-bar">
+    <span class="tab-group-label">LIVE OPS</span>
+    <button class="tab-btn active" data-tab="traffic">TRAFFIC</button>
+    <button class="tab-btn" data-tab="fleet">FLEET</button>
     <span class="tab-group-label">AIRSPACE</span>
-    <button class="tab-btn active" data-tab="notams">NOTAMs</button>
+    <button class="tab-btn" data-tab="notams">NOTAMs</button>
     <button class="tab-btn" data-tab="tfr">TFRs</button>
     <button class="tab-btn" data-tab="charts">CHARTS</button>
-    <button class="tab-btn" data-tab="traffic">TRAFFIC</button>
     <span class="tab-group-label">AIRPORTS</span>
     <button class="tab-btn" data-tab="airport">AIRPORT INFO</button>
     <button class="tab-btn" data-tab="flightplan">FLIGHT PLAN</button>
@@ -44,13 +46,14 @@
     <span class="tab-group-label">OPS</span>
     <button class="tab-btn" data-tab="checklist">CHECKLISTS</button>
     <button class="tab-btn" data-tab="weight">W&amp;B</button>
+    <button class="tab-btn" data-tab="optools">OP TOOLS</button>
     <button class="tab-btn" data-tab="tools">TOOLS</button>
   </nav>
 
   <main class="app-body">
 
     <!-- NOTAMs -->
-    <section class="tab-content active" id="tab-notams">
+    <section class="tab-content" id="tab-notams">
       <div class="section-header">
         <h2>NOTAMs</h2>
         <div class="search-bar">
@@ -142,7 +145,7 @@
     </section>
 
     <!-- LIVE TRAFFIC -->
-    <section class="tab-content" id="tab-traffic">
+    <section class="tab-content active" id="tab-traffic">
       <div class="section-header"><h2>Live Traffic — ADS-B</h2></div>
       <div class="traffic-warning">
         <span>⚠️</span>
@@ -177,6 +180,98 @@
         <a href="https://www.flightaware.com" target="_blank" class="resource-link">FlightAware ↗</a>
         <a href="https://www.flightradar24.com" target="_blank" class="resource-link">Flightradar24 ↗</a>
         <a href="https://www.faa.gov/air_traffic/nas_status/" target="_blank" class="resource-link">FAA NAS Status ↗</a>
+      </div>
+    </section>
+
+    <!-- FLEET TRACKER -->
+    <section class="tab-content" id="tab-fleet">
+      <div class="section-header">
+        <h2>Fleet Tracker</h2>
+        <div style="font-size:11px;color:var(--text-secondary);font-family:var(--font-body)">Live ADS-B · alerts · route overlay · history log · CSV export · saves between sessions</div>
+      </div>
+
+      <div class="fleet-layout">
+        <!-- LEFT: sidebar + add + alerts -->
+        <div class="fleet-sidebar-col">
+          <div class="fleet-sidebar-header">YOUR FLEET <span id="fleet_count" style="color:var(--text-secondary);font-weight:400;margin-left:6px"></span></div>
+          <div id="fleet_sidebar" class="fleet-sidebar"></div>
+
+          <div class="fleet-add-panel">
+            <div class="fleet-add-title">+ ADD AIRCRAFT</div>
+            <label class="fleet-form-label">Name / Callsign *</label>
+            <input type="text" id="fleet_add_name" class="fleet-input" placeholder="e.g. Ops Bird 1"/>
+            <label class="fleet-form-label">Registration</label>
+            <input type="text" id="fleet_add_reg" class="fleet-input" placeholder="e.g. N569AS"/>
+            <label class="fleet-form-label">ICAO24 Hex Code</label>
+            <input type="text" id="fleet_add_hex" class="fleet-input" placeholder="e.g. a7486a"/>
+            <label class="fleet-form-label" style="font-size:10px;color:var(--text-secondary)">Don't know the hex? Look up by reg:</label>
+            <input type="text" id="fleet_hex_lookup" class="fleet-input" placeholder="N-number e.g. N569AS"/>
+            <button onclick="findHexByReg()" class="btn-secondary" style="margin-top:4px;font-size:11px;padding:4px 10px;width:100%">FIND ON ADS-B EXCHANGE ↗</button>
+            <label class="fleet-form-label">Notes</label>
+            <input type="text" id="fleet_add_notes" class="fleet-input" placeholder="e.g. B738 — SoCal ops"/>
+            <button class="btn-primary" onclick="addFleetAircraft()" style="width:100%;margin-top:10px">ADD TO FLEET</button>
+          </div>
+
+          <!-- ALERTS PANEL -->
+          <div class="fleet-add-panel" style="margin-top:14px">
+            <div class="fleet-add-title">🔔 ALERT RULES</div>
+            <label class="fleet-form-label">Aircraft</label>
+            <select id="alert_ac_select" class="fleet-input"></select>
+            <label class="fleet-form-label">Alert Type</label>
+            <select id="alert_type" class="fleet-input" onchange="updateAlertTypeFields()">
+              <option value="depart">Departure (ground → airborne)</option>
+              <option value="land">Landing (airborne → ground)</option>
+              <option value="altitude">Altitude threshold</option>
+              <option value="geofence">Geo-fence (proximity alert)</option>
+            </select>
+
+            <div id="alert_alt_fields" style="display:none">
+              <label class="fleet-form-label">Direction</label>
+              <select id="alert_alt_dir" class="fleet-input">
+                <option value="above">Above altitude</option>
+                <option value="below">Below altitude</option>
+              </select>
+              <label class="fleet-form-label">Altitude (ft)</label>
+              <input type="number" id="alert_alt_val" class="fleet-input" value="10000" placeholder="e.g. 10000"/>
+            </div>
+
+            <div id="alert_geo_fields" style="display:none">
+              <label class="fleet-form-label">Waypoint Name</label>
+              <input type="text" id="alert_geo_name" class="fleet-input" placeholder="e.g. KLAX"/>
+              <label class="fleet-form-label">Latitude</label>
+              <input type="number" id="alert_geo_lat" class="fleet-input" step="0.0001" placeholder="e.g. 33.9425"/>
+              <label class="fleet-form-label">Longitude</label>
+              <input type="number" id="alert_geo_lon" class="fleet-input" step="0.0001" placeholder="e.g. -118.4081"/>
+              <label class="fleet-form-label">Radius (NM)</label>
+              <input type="number" id="alert_geo_radius" class="fleet-input" value="10" placeholder="e.g. 10"/>
+            </div>
+
+            <button class="btn-primary" onclick="addAlertRule()" style="width:100%;margin-top:10px">ADD ALERT RULE</button>
+
+            <div style="margin-top:12px">
+              <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--text-secondary);margin-bottom:6px">ACTIVE RULES</div>
+              <div id="alert_rules_list"></div>
+            </div>
+
+            <div style="margin-top:12px">
+              <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:var(--text-secondary);margin-bottom:6px">ALERT LOG</div>
+              <div id="alert_log" class="alert-log"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: map + panel -->
+        <div class="fleet-main-col">
+          <div class="fleet-map-header">LIVE MAP</div>
+          <div class="iframe-container" style="height:400px;margin-bottom:14px">
+            <iframe id="fleet_map_frame" src="https://globe.adsbexchange.com/?largeMode=2&hideButtons" allowfullscreen title="Fleet Map"></iframe>
+          </div>
+          <div id="fleet_panel" class="fleet-panel">
+            <div style="color:var(--text-secondary);font-family:var(--font-body);font-size:13px;padding:20px">
+              Select an aircraft from the fleet list to view live data, route track, and history.
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -420,6 +515,197 @@
       </div>
     </section>
 
+    <!-- OP TOOLS -->
+    <section class="tab-content" id="tab-optools">
+      <div class="section-header"><h2>Operational Tools</h2></div>
+
+      <!-- SUNRISE / SUNSET -->
+      <div class="optools-section">
+        <h3 class="sub-heading">☀️ Sunrise / Sunset & Night Currency</h3>
+        <div class="optools-form">
+          <div class="optools-row">
+            <div>
+              <label class="fleet-form-label">Airport ICAO (auto-fill lat/lon)</label>
+              <div style="display:flex;gap:8px">
+                <input type="text" id="sun_icao" class="fleet-input" placeholder="e.g. KLAX" maxlength="4" style="width:120px"/>
+                <button class="btn-primary" onclick="lookupAirportForSun()">LOOKUP</button>
+              </div>
+            </div>
+            <div>
+              <label class="fleet-form-label">Latitude</label>
+              <input type="number" id="sun_lat" class="fleet-input" step="0.0001" placeholder="e.g. 33.9425"/>
+            </div>
+            <div>
+              <label class="fleet-form-label">Longitude</label>
+              <input type="number" id="sun_lon" class="fleet-input" step="0.0001" placeholder="e.g. -118.4081"/>
+            </div>
+            <div>
+              <label class="fleet-form-label">Date</label>
+              <input type="date" id="sun_date" class="fleet-input"/>
+            </div>
+            <div style="display:flex;align-items:flex-end">
+              <button class="btn-primary" onclick="calcSunriseSunset()">CALCULATE</button>
+            </div>
+          </div>
+        </div>
+        <div id="sun_output" style="margin-top:14px"></div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- HOVER PERFORMANCE -->
+      <div class="optools-section">
+        <h3 class="sub-heading">🚁 Helicopter Hover Performance (HIGE / HOGE)</h3>
+        <div class="optools-form">
+          <div class="optools-row">
+            <div>
+              <label class="fleet-form-label">Helicopter</label>
+              <select id="hp_aircraft" class="fleet-input" style="min-width:220px"></select>
+            </div>
+            <div>
+              <label class="fleet-form-label">Gross Weight (lbs)</label>
+              <input type="number" id="hp_gw" class="fleet-input" value="2400" placeholder="lbs"/>
+            </div>
+            <div>
+              <label class="fleet-form-label">Field Elevation (ft MSL)</label>
+              <input type="number" id="hp_elev" class="fleet-input" value="500" placeholder="ft"/>
+            </div>
+            <div>
+              <label class="fleet-form-label">Altimeter (inHg)</label>
+              <input type="number" id="hp_altim" class="fleet-input" value="29.92" step="0.01"/>
+            </div>
+            <div>
+              <label class="fleet-form-label">OAT (°C)</label>
+              <input type="number" id="hp_oat" class="fleet-input" value="15" placeholder="°C"/>
+            </div>
+            <div style="display:flex;align-items:flex-end">
+              <button class="btn-primary" onclick="calcHoverPerf()">CALCULATE</button>
+            </div>
+          </div>
+        </div>
+        <div id="hp_output" style="margin-top:14px"></div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- ICAO FLIGHT PLAN BUILDER -->
+      <div class="optools-section">
+        <h3 class="sub-heading">📋 ICAO Flight Plan Builder</h3>
+        <div class="fp-disclaimer">Always file via an authorized ATC unit or <a href="https://www.1800wxbrief.com/Website/flightPlan" target="_blank" style="color:var(--accent)">1800wxbrief.com ↗</a>. This tool generates the formatted text only.</div>
+
+        <div class="fp-grid">
+          <div class="fp-field">
+            <label class="fleet-form-label">Field 7 — Aircraft ID</label>
+            <input type="text" id="fp_acid" class="fleet-input" placeholder="e.g. N12345 / UAL123"/>
+          </div>
+          <div class="fp-field">
+            <label class="fleet-form-label">Field 8 — Flight Rules</label>
+            <select id="fp_rules" class="fleet-input">
+              <option value="I">I — IFR</option>
+              <option value="V">V — VFR</option>
+              <option value="Y">Y — IFR first</option>
+              <option value="Z">Z — VFR first</option>
+            </select>
+          </div>
+          <div class="fp-field">
+            <label class="fleet-form-label">Field 8 — Type of Flight</label>
+            <select id="fp_type" class="fleet-input">
+              <option value="G">G — General Aviation</option>
+              <option value="S">S — Scheduled</option>
+              <option value="N">N — Non-scheduled</option>
+              <option value="M">M — Military</option>
+              <option value="X">X — Other</option>
+            </select>
+          </div>
+          <div class="fp-field">
+            <label class="fleet-form-label">Field 9 — Aircraft Type (ICAO)</label>
+            <input type="text" id="fp_actype" class="fleet-input" placeholder="e.g. C172 / R44 / B738 / H60"/>
+          </div>
+          <div class="fp-field">
+            <label class="fleet-form-label">Field 9 — Wake Turbulence</label>
+            <select id="fp_wake" class="fleet-input">
+              <option value="L">L — Light (&lt;7,000 kg)</option>
+              <option value="M">M — Medium</option>
+              <option value="H">H — Heavy (&gt;136,000 kg)</option>
+              <option value="J">J — Super (A380)</option>
+            </select>
+          </div>
+          <div class="fp-field">
+            <label class="fleet-form-label">Field 10 — Equipment / Capabilities</label>
+            <input type="text" id="fp_equip" class="fleet-input" placeholder="e.g. SDFG/SD (see ICAO Doc 4444)" value="S"/>
+          </div>
+          <div class="fp-field">
+            <label class="fleet-form-label">Field 13 — Departure ICAO</label>
+            <input type="text" id="fp_dep" class="fleet-input" placeholder="e.g. KLAX" maxlength="4"/>
+          </div>
+          <div class="fp-field">
+            <label class="fleet-form-label">Field 13 — ETD (HHMM UTC)</label>
+            <input type="time" id="fp_deptime" class="fleet-input" value="12:00"/>
+          </div>
+          <div class="fp-field">
+            <label class="fleet-form-label">Field 15 — Speed</label>
+            <input type="text" id="fp_speed" class="fleet-input" placeholder="e.g. 120" value="120"/>
+          </div>
+          <div class="fp-field">
+            <label class="fleet-form-label">Speed Unit</label>
+            <select id="fp_speed_unit" class="fleet-input">
+              <option value="N">N — Knots</option>
+              <option value="K">K — km/h</option>
+              <option value="M">M — Mach</option>
+            </select>
+          </div>
+          <div class="fp-field">
+            <label class="fleet-form-label">Field 15 — Altitude</label>
+            <input type="text" id="fp_alt" class="fleet-input" placeholder="e.g. 8500" value="8500"/>
+          </div>
+          <div class="fp-field">
+            <label class="fleet-form-label">Altitude Unit</label>
+            <select id="fp_alt_unit" class="fleet-input">
+              <option value="A">A — hundreds of ft (e.g. A085)</option>
+              <option value="F">F — Flight Level (e.g. F350)</option>
+              <option value="S">S — Standard metric (tens of m)</option>
+              <option value="M">M — meters</option>
+            </select>
+          </div>
+          <div class="fp-field fp-field-wide">
+            <label class="fleet-form-label">Field 15 — Route (DCT or airways/fixes)</label>
+            <input type="text" id="fp_route" class="fleet-input" placeholder="e.g. DCT SMO DCT LAX or VFR"/>
+          </div>
+          <div class="fp-field">
+            <label class="fleet-form-label">Field 16 — Destination ICAO</label>
+            <input type="text" id="fp_dest" class="fleet-input" placeholder="e.g. KSFO" maxlength="4"/>
+          </div>
+          <div class="fp-field">
+            <label class="fleet-form-label">Field 16 — EET (HHMM)</label>
+            <input type="time" id="fp_eet" class="fleet-input" value="01:30"/>
+          </div>
+          <div class="fp-field">
+            <label class="fleet-form-label">Field 16 — Alternate 1</label>
+            <input type="text" id="fp_altn1" class="fleet-input" placeholder="e.g. KOAK" maxlength="4"/>
+          </div>
+          <div class="fp-field">
+            <label class="fleet-form-label">Field 16 — Alternate 2</label>
+            <input type="text" id="fp_altn2" class="fleet-input" placeholder="e.g. KSJC" maxlength="4"/>
+          </div>
+          <div class="fp-field">
+            <label class="fleet-form-label">Field 19 — Fuel Endurance (HHMM)</label>
+            <input type="time" id="fp_fuel" class="fleet-input" value="03:00"/>
+          </div>
+          <div class="fp-field">
+            <label class="fleet-form-label">Field 19 — Persons on Board</label>
+            <input type="number" id="fp_pob" class="fleet-input" value="2" min="1"/>
+          </div>
+          <div class="fp-field fp-field-wide">
+            <label class="fleet-form-label">Field 18 — Remarks (optional)</label>
+            <input type="text" id="fp_remarks" class="fleet-input" placeholder="e.g. HOSP / MEDEVAC / PBN/B2"/>
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="buildICAOFlightPlan()" style="margin-top:14px">BUILD FLIGHT PLAN</button>
+        <div id="fp_output" style="margin-top:14px"></div>
+      </div>
+    </section>
+
     <!-- TOOLS -->
     <section class="tab-content" id="tab-tools">
       <div class="section-header"><h2>Flight Tools</h2></div>
@@ -509,6 +795,8 @@
   <script src="wb_calc.js"></script>
   <script src="tools.js"></script>
   <script src="extended.js"></script>
+  <script src="fleet.js"></script>
+  <script src="optools.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -276,6 +276,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // v3 W&B
   initWBCalculator();
+
+  // v5 op tools
+  initSunriseTool();
+  initHoverPerf();
+  initFleetTracker();
+
+  // Auto-load ADS-B map
+  loadDefaultADSB();
 });
 
 // Allow Enter key on inputs

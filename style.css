@@ -1665,3 +1665,466 @@ button.reset-cl:hover { color: var(--danger); border-color: var(--danger); }
   border-radius: var(--radius);
   background: #0f1520;
 }
+
+/* ============================================================
+   AviOps v4 — Fleet Tracker Styles
+   ============================================================ */
+
+.fleet-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .fleet-layout { grid-template-columns: 1fr; }
+}
+
+/* Sidebar */
+.fleet-sidebar-col { min-width: 0; }
+
+.fleet-sidebar-header {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--accent);
+  text-transform: uppercase;
+  padding: 0 0 8px 0;
+  border-bottom: 1px solid var(--border-bright);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.fleet-sidebar { margin-bottom: 16px; }
+
+.fleet-empty {
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 13px;
+  padding: 12px 0;
+}
+
+.fleet-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.fleet-item:hover { border-color: var(--border-bright); background: var(--bg-card-hover); }
+
+.fleet-item-active {
+  border-color: var(--accent) !important;
+  background: rgba(0,212,255,0.06) !important;
+}
+
+.fleet-item-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.fleet-status-dot { font-size: 10px; flex-shrink: 0; }
+
+.fleet-item-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fleet-remove-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0 2px;
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+.fleet-remove-btn:hover { color: var(--danger); }
+
+.fleet-item-reg {
+  font-family: var(--font-data);
+  font-size: 11px;
+  color: var(--accent-dim);
+  margin-bottom: 4px;
+}
+
+.fleet-item-hex {
+  color: var(--text-secondary);
+  font-size: 10px;
+}
+
+.fleet-item-data {
+  display: flex;
+  gap: 10px;
+  font-family: var(--font-data);
+  font-size: 10px;
+  color: var(--text-secondary);
+  flex-wrap: wrap;
+}
+
+.fleet-item-notes {
+  font-size: 10px;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* Add panel */
+.fleet-add-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+
+.fleet-add-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.fleet-form-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  margin-top: 10px;
+}
+
+.fleet-form-label:first-child { margin-top: 0; }
+
+.fleet-input {
+  width: 100%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-family: var(--font-data);
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 2px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.fleet-input:focus { border-color: var(--accent); outline: none; }
+
+/* Main col */
+.fleet-main-col { min-width: 0; }
+
+.fleet-map-header {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* Data panel */
+.fleet-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.fleet-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.fleet-panel-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+}
+
+.fleet-panel-sub {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-family: var(--font-data);
+}
+
+/* Data chips grid */
+.fleet-data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.fleet-data-chip {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 8px 10px;
+}
+
+.fleet-data-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.fleet-data-val {
+  font-family: var(--font-data);
+  font-size: 13px;
+  color: var(--accent);
+  word-break: break-all;
+}
+
+/* History log */
+.fleet-history {
+  margin-top: 4px;
+}
+
+.fleet-history-header {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  gap: 4px;
+}
+
+.fleet-history-table-wrap {
+  overflow-x: auto;
+  max-height: 280px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+
+.fleet-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-data);
+  font-size: 11px;
+}
+
+.fleet-history-table th {
+  position: sticky;
+  top: 0;
+  text-align: left;
+  padding: 6px 10px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--accent);
+  text-transform: uppercase;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-bright);
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.fleet-history-table td {
+  padding: 5px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  color: var(--text-data);
+  white-space: nowrap;
+}
+
+.fleet-history-table tr:hover td {
+  background: rgba(0,212,255,0.03);
+}
+
+/* ============================================================
+   AviOps v5 — Op Tools, Alert System, Route Overlay CSS
+   ============================================================ */
+
+/* ===== FLEET ALERTS ===== */
+.fleet-alert-badge {
+  font-size:10px; font-weight:700; color:var(--warn);
+  background:rgba(255,184,0,0.12); border:1px solid rgba(255,184,0,0.3);
+  border-radius:10px; padding:1px 6px; flex-shrink:0;
+}
+
+.alert-rule-item {
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  background:var(--bg-secondary); border:1px solid var(--border);
+  border-radius:2px; padding:8px 10px; margin-bottom:6px;
+}
+
+.alert-rule-disabled { opacity:0.45; }
+.alert-rule-left { flex:1; min-width:0; }
+.alert-rule-ac { font-size:12px; font-weight:700; color:var(--text-primary); display:block; }
+.alert-rule-desc { font-size:11px; color:var(--text-secondary); font-family:var(--font-body); display:block; }
+.alert-rule-actions { display:flex; gap:4px; flex-shrink:0; }
+
+.alert-toggle-btn {
+  background:none; border:1px solid var(--border-bright); color:var(--accent);
+  font-size:9px; font-weight:700; letter-spacing:1px; padding:2px 7px;
+  border-radius:2px; cursor:pointer; transition:all 0.2s;
+}
+.alert-toggle-btn:hover { background:var(--accent-glow); }
+
+.alert-remove-btn {
+  background:none; border:1px solid rgba(255,56,56,0.3); color:rgba(255,56,56,0.6);
+  font-size:14px; line-height:1; padding:1px 6px; border-radius:2px; cursor:pointer;
+  transition:color 0.2s;
+}
+.alert-remove-btn:hover { color:var(--danger); border-color:var(--danger); }
+
+.alert-log {
+  max-height:160px; overflow-y:auto; border:1px solid var(--border);
+  border-radius:2px; background:var(--bg-secondary);
+}
+
+.alert-log-item {
+  padding:5px 8px; border-bottom:1px solid rgba(255,255,255,0.03);
+  font-family:var(--font-data); font-size:11px; color:var(--text-data); line-height:1.4;
+}
+
+.alert-log-time { color:var(--text-secondary); margin-right:6px; }
+
+/* Toast notification */
+.fleet-toast {
+  position:fixed; bottom:20px; right:20px; z-index:9000;
+  background:var(--bg-card); border:1px solid var(--border-bright);
+  border-left:4px solid var(--accent); border-radius:var(--radius);
+  padding:12px 18px; font-family:var(--font-data); font-size:13px;
+  color:var(--text-primary); max-width:360px; box-shadow:0 4px 20px rgba(0,0,0,0.5);
+  transform:translateX(120%); transition:transform 0.3s ease;
+}
+.fleet-toast-show { transform:translateX(0); }
+
+/* Route section */
+.route-section { margin:16px 0; }
+.route-header {
+  font-size:11px; font-weight:700; letter-spacing:2px; color:var(--accent);
+  text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center;
+}
+
+/* ===== OP TOOLS ===== */
+.optools-section { margin-bottom:8px; }
+
+.optools-form { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:16px; }
+
+.optools-row {
+  display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;
+}
+
+.optools-row > div { min-width:140px; flex:1; }
+
+/* Sunrise/sunset */
+.sun-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px; margin-bottom:16px;
+}
+
+.sun-card {
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:16px; text-align:center;
+}
+
+.sun-rise { border-top:2px solid var(--warn); }
+.sun-set  { border-top:2px solid #8866ff; }
+
+.sun-card-icon { font-size:24px; margin-bottom:6px; }
+.sun-card-label { font-size:10px; font-weight:700; letter-spacing:2px; color:var(--text-secondary); text-transform:uppercase; margin-bottom:4px; }
+.sun-card-time  { font-family:var(--font-data); font-size:18px; color:var(--accent); margin-bottom:2px; }
+.sun-card-local { font-size:11px; color:var(--text-secondary); font-family:var(--font-body); }
+
+.sun-currency-panel {
+  background:rgba(0,212,255,0.04); border:1px solid var(--border-bright);
+  border-radius:var(--radius); padding:14px;
+}
+
+.sun-currency-title { font-size:11px; font-weight:700; letter-spacing:2px; color:var(--accent); text-transform:uppercase; margin-bottom:10px; }
+.sun-currency-row { display:flex; justify-content:space-between; align-items:center; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.sun-currency-row:last-child { border-bottom:none; }
+.sun-cur-label { font-size:12px; color:var(--text-secondary); font-family:var(--font-body); }
+.sun-cur-val   { font-family:var(--font-data); font-size:12px; color:var(--text-primary); }
+
+/* Hover performance */
+.hp-results { }
+.hp-conditions { margin-bottom:16px; }
+.hp-cond-title { font-size:10px; font-weight:700; letter-spacing:2px; color:var(--text-secondary); text-transform:uppercase; margin-bottom:8px; }
+.hp-cond-grid  { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:8px; }
+.hp-cond-chip  { background:var(--bg-secondary); border:1px solid var(--border); border-radius:2px; padding:8px 10px; }
+.hp-cond-label { font-size:9px; font-weight:700; letter-spacing:1px; color:var(--text-secondary); text-transform:uppercase; margin-bottom:3px; }
+.hp-cond-val   { font-family:var(--font-data); font-size:16px; color:var(--accent); }
+
+.hp-hover-cards { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+
+.hp-hover-card {
+  border-radius:var(--radius); padding:18px; border:1px solid;
+}
+
+.hp-go   { background:rgba(0,255,136,0.06); border-color:rgba(0,255,136,0.3); }
+.hp-nogo { background:rgba(255,56,56,0.07); border-color:rgba(255,56,56,0.4); animation:danger-pulse 1.5s infinite; }
+
+.hp-hover-label { font-size:20px; font-weight:900; letter-spacing:3px; color:var(--text-primary); margin-bottom:4px; }
+.hp-hover-sub   { font-size:11px; color:var(--text-secondary); font-family:var(--font-body); line-height:1.5; margin-bottom:10px; }
+.hp-hover-cap   { font-family:var(--font-data); font-size:16px; color:var(--accent); margin-bottom:6px; }
+.hp-hover-status { font-size:13px; }
+
+.hp-warning {
+  background:rgba(255,184,0,0.07); border:1px solid rgba(255,184,0,0.3);
+  border-radius:var(--radius); padding:10px 14px;
+  font-family:var(--font-body); font-size:13px; color:var(--warn); margin-bottom:8px;
+}
+
+/* Flight Plan */
+.fp-disclaimer {
+  background:rgba(0,212,255,0.05); border:1px solid var(--border-bright); border-radius:var(--radius);
+  padding:10px 14px; font-family:var(--font-body); font-size:13px; color:var(--text-secondary);
+  margin-bottom:16px; line-height:1.5;
+}
+
+.fp-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px;
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:16px;
+}
+
+.fp-field { }
+.fp-field-wide { grid-column:span 2; }
+.fp-field label { display:block; }
+
+.fp-result-tabs { display:flex; gap:6px; margin-bottom:10px; }
+.fp-tab-btn {
+  background:var(--bg-card); border:1px solid var(--border); color:var(--text-secondary);
+  font-family:var(--font-ui); font-size:12px; font-weight:700; letter-spacing:1px;
+  padding:5px 14px; border-radius:2px; cursor:pointer; transition:all 0.2s;
+}
+.fp-tab-btn.active { border-color:var(--accent); color:var(--accent); background:var(--accent-glow); }
+
+.fp-format-block { }
+.fp-pre {
+  background:var(--bg-secondary); border:1px solid var(--border); border-radius:2px;
+  padding:14px 16px; font-family:var(--font-data); font-size:12px; color:var(--text-data);
+  line-height:1.8; white-space:pre-wrap; overflow-x:auto;
+}
